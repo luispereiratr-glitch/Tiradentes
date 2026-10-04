@@ -30,7 +30,7 @@ const o = (
 
 export const oficiaisVestibulares: Questao[] = [
   // ───────── ENEM ─────────
-  o("ENEM", "2025", 64, "vargas", "medio",
+  o("ENEM", "2025", 64, "vargas", "facil",
     "Em toda a sua carreira política, Getúlio Vargas sempre contara com o seu talento pessoal de persuasão e poder de manipulação. Agora, porém, seus amigos começavam a perceber que ele parecia envelhecido e cansado. A principal figura da oposição, concordavam eles, era o belicoso jornalista Carlos Lacerda. Se ao menos pudessem “removê-lo” do cenário político, talvez Vargas se salvasse da situação. Esses seguidores decidiram tomar o assunto em suas próprias mãos com o atentado da Rua Tonelero.\n\nSKIDMORE, T. Brasil: de Getúlio a Castelo. Rio de Janeiro: Paz e Terra, 2003 (adaptado).\n\nNesse contexto, a ação dos aliados de Getúlio Vargas teve como consequência imediata o(a)",
     [
       "intensificação dos ataques do grupo udenista.",
@@ -43,7 +43,7 @@ export const oficiaisVestibulares: Questao[] = [
     "Tonelero → UDN ataca mais → militares pressionam → suicídio → aí sim o povo reage."),
 
   // ───────── Fuvest ─────────
-  o("Fuvest", "2024", 44, "jk", "medio",
+  o("Fuvest", "2024", 44, "jk", "facil",
     "“Industrializar é uma condição de vida, é uma absoluta e imperiosa necessidade, é mesmo um dever de que já não está ao nosso alcance declinar. Nem que o quiséssemos, não poderíamos sobreviver conservando-nos nação pastoril e agrícola, no velho estilo, exportando café e umas poucas matérias-primas [...] Industrializar um país não é uma obra mágica que possa ser feita sem preparo, ao simples sopro de uma aspiração. É necessário que exista uma mentalidade industrial, um estado de espírito propício ao desenvolvimento, é necessário que existam gerações preparadas para a ação.”\n\nOLIVEIRA, Juscelino Kubitschek de. Industrialização: batalha pela própria sobrevivência da nacionalidade. São Paulo: Serviço de Publicações da Federação e Centro das Indústrias do Estado de S. Paulo, 1957. p. 9-10.\n\nA “mentalidade industrial”, proposta pelo então presidente Juscelino Kubitschek, concretiza-se em seu governo (1956-1961) sob a forma",
     [
       "de um projeto desenvolvimentista amparado por incentivos e captação de recursos estrangeiros.",
@@ -54,7 +54,7 @@ export const oficiaisVestibulares: Questao[] = [
     ],
     "O Plano de Metas apostou na industrialização acelerada com forte entrada de capital estrangeiro, sobretudo das montadoras de automóveis. A alternativa \"nacionalista e trabalhista\" descreve Vargas, e é a pegadinha: JK era desenvolvimentista, mas aberto às multinacionais. A educação era uma das metas, porém recebeu a menor fatia dos recursos.",
     "Vargas = nacionalista. JK = desenvolvimentista com capital estrangeiro."),
-  o("Fuvest", "2024", 76, "guerra-fria", "dificil",
+  o("Fuvest", "2024", 76, "guerra-fria", "medio",
     "“O plano dos Estados Unidos de derrubarem a Revolução já estava esboçado na ocasião em que Mikoyan [vice-líder no governo soviético de Nikita Kruschev] visitou Havana, em fevereiro de 1960 (...). A CIA propunha a sabotagem das refinarias de açúcar de Cuba, a principal fonte de riqueza da ilha. (...) Como prometido, Fidel Castro reagiu contra os Estados Unidos (...). Ele anunciou a nacionalização de todas as propriedades norte-americanas importantes da ilha. (...) Numa frase sinistra (...), Castro salientou que a Cuba revolucionária tinha agora o apoio militar de fora do continente. Cuba ‘aceitaria com gratidão’, disse ele, ‘a ajuda dos foguetes da União Soviética (...)’. Naquele mês, a lenha fora jogada na fogueira, quando Castro chegou a Nova York para falar na Assembleia Geral da ONU, instalando-se no Harlem. (...) Castro ficou no [hotel] Theresa, cercado por um grupo de admiradores (...) e numa tarde memorável foi visitado pelo líder soviético. (...) Kruschev escreveu nas suas memórias que ‘indo a um hotel negro num bairro negro, nós estávamos fazendo uma dupla demonstração contra as políticas discriminatórias dos Estados Unidos em relação aos negros, assim como em relação a Cuba’”.\n\nGOTT, Richard. Cuba: uma nova história. Rio de Janeiro: Zahar, 2006. p. 210-213. Adaptado.\n\nAs tensões políticas abordadas no texto referem-se",
     [
       "ao gradual alinhamento entre Cuba e a URSS e ao aceno dos dois governantes de apoio ao movimento negro norte-americano.",
@@ -67,7 +67,7 @@ export const oficiaisVestibulares: Questao[] = [
     "Cuba: 1959 revolução → 1960 aproxima da URSS → 1962 mísseis."),
 
   // ───────── Unicamp ─────────
-  o("Unicamp", "2018", 55, "jk", "dificil",
+  o("Unicamp", "2018", 55, "jk", "medio",
     "Vistas em conjunto, as aspirações ruralistas não eram contraditórias ou incompatíveis com o programa desenvolvimentista de Juscelino Kubitschek. A ideia de incompatibilidade entre o projeto nacional-desenvolvimentista e os interesses agrários era uma ficção.\n\n(Adaptado de Vânia Moreira, “Os Anos JK: industrialização e modelo oligárquico de desenvolvimento rural”, em Jorge Ferreira e Lucília Delgado (Orgs.), O Brasil Republicano. v. 3. Rio de Janeiro: Civilização Brasileira, 2003, p. 169-170.)\n\nConsiderando a composição do setor rural nacional e o programa desenvolvimentista do governo JK, é correto afirmar que:",
     [
       "O desenvolvimentismo atendia às ambições da oligarquia rural, em função das políticas de modernização da agricultura, permitindo que ela se beneficiasse da expansão do mercado consumidor, um dos desdobramentos da industrialização.",
@@ -77,7 +77,7 @@ export const oficiaisVestibulares: Questao[] = [
     ],
     "JK industrializou sem mexer na estrutura agrária: não houve reforma agrária, e os grandes proprietários ganharam crédito, estradas e um mercado urbano maior para vender. Isso explica sua estabilidade política, pois seu partido, o PSD, era justamente o das elites rurais. O PTB era o partido dos trabalhadores urbanos, não da oligarquia. A questão da terra só entraria na pauta com Jango.",
     "JK agradou indústria e fazendeiro. PSD = elite rural; PTB = trabalhador urbano."),
-  o("Unicamp", "2018", 56, "figuras", "dificil",
+  o("Unicamp", "2018", 56, "figuras", "medio",
     "[A questão traz a fotografia do pódio: os dois atletas norte-americanos, de cabeça baixa, erguem o punho fechado com uma luva preta.]\n\nA foto mostra, da esquerda para a direita, os atletas Peter Norman (australiano), John Carlos e Tommie Smith (norte-americanos), no pódio dos 200 metros rasos das Olimpíadas de 1968, no México.\n\nConsiderando a imagem acima e seus conhecimentos acerca dos Movimentos de Direitos Civis, assinale a alternativa correta.",
     [
       "A fotografia registra a manifestação de atletas defensores dos Panteras Negras e das ações violentas, se necessárias, para a conquista da igualdade racial.",
@@ -87,7 +87,7 @@ export const oficiaisVestibulares: Questao[] = [
     ],
     "O punho fechado erguido é a saudação do Black Power, associada aos Panteras Negras, grupo criado em 1966 que defendia a autodefesa armada dos negros, na linha das ideias de Malcolm X. Não é o gesto do movimento pacifista de Luther King. A Ku Klux Klan é uma organização racista branca, e o Comitê Olímpico, longe de apoiar, puniu os dois atletas. A banca quis mostrar que o movimento negro tinha correntes diferentes.",
     "Punho fechado = Black Power / Panteras (linha Malcolm X). Mão estendida = King."),
-  o("Unicamp", "2025", 30, "descolonizacao", "dificil",
+  o("Unicamp", "2025", 30, "descolonizacao", "medio",
     "A maioria dos países africanos tornaram-se independentes entre 1950 e 1975. Amílcar Cabral foi uma das lideranças que formularam projetos políticos para criar unidades nacionais no pós-independência. Ele havia nascido na Guiné-Bissau em 1924; depois de seu nascimento, sua família se mudou para Cabo Verde. Em 1945, obteve bolsa para estudar em Portugal; na Europa, entrou, então, em contato com as teorias do movimento da negritude, pan-africanismo e marxismo. De volta à África em 1952, ajudou a fundar o Partido Africano para a Independência de Guiné e Cabo Verde (PAIGC, 1953), iniciando a luta armada contra a metrópole em 1963. Em um discurso, Cabral afirmou: “No nosso Partido ninguém dividiu; pelo contrário, cada dia nos unimos mais. Aqui não há papel, nem fula, nem mandinga, nem filhos de cabo-verdianos, nada disso.”\n\n(Adaptado de MALACCO, F. Unidade nacional e unidade continental: uma discussão acerca dos projetos políticos de Amílcar Cabral e Kwame Nkrumah. Revista Ars Historica, 17, p. 78-100, jul/dez 2018.)\n\nCom base no excerto, marque a alternativa correta sobre o ideário nacional proposto por Amílcar Cabral e pelo movimento por ele liderado.",
     [
       "Defendia, para fortalecer a luta contra a colonização e ideologia portuguesa, as unidades políticas nacionais posicionadas acima da diversidade de etnias africanas.",
@@ -129,7 +129,7 @@ export const oficiaisVestibulares: Questao[] = [
     ],
     "Woodstock foi o auge da contracultura hippie, cujo lema \"paz e amor\" era uma resposta direta à Guerra do Vietnã. Em 1969 os EUA tinham mais de meio milhão de soldados no país, e os jovens eram os convocados. O festival reuniu músicos que cantavam contra a guerra, como Jimi Hendrix e Joan Baez.",
     "Paz e amor = contra o Vietnã."),
-  o("UERJ", "2014 (1º EQ)", 48, "vietna", "medio",
+  o("UERJ", "2014 (1º EQ)", 48, "vietna", "facil",
     "Eu e minha mulher somos de gerações que viveram cada minuto da Guerra do Vietnã (1959-1975), uma das mais sangrentas de todos os tempos. Por isso, nossa visita a esse país teve um sentido muito especial.\n\nO país hoje é um formigueiro em atividade, onde todos correm para recuperar o tempo perdido. A renda per capita ainda é muito baixa: US$ 700 por ano. O salário mínimo também é baixo: US$ 30. Embora todos os preços sejam baixos, esses valores dão uma ideia do tipo de vida, ainda austera, que levam os vietnamitas.\n\nA guerra consumiu gerações inteiras. A maioria esmagadora da população hoje é de jovens, o que talvez explique o predomínio da motocicleta como meio de transporte. Quase não há transporte coletivo, e são poucos os carros. Enxames de motos dominam as ruas. A moto mais barata vem da China e custa US$ 300. Equivale a dez meses de salário mínimo. Em Cidade de Ho Chi Minh, há 4 milhões de motos para 2 milhões de famílias.\n\nBernardo Kucinski. Adaptado de redebrasilatual.com.br, julho de 2010.\n\nNo relato de sua visita ao Vietnã, o autor faz referência a algumas das características atuais daquela sociedade. Essas características se relacionam com a seguinte mudança recente na história do país:",
     [
       "implantação do socialismo de mercado",
@@ -139,7 +139,7 @@ export const oficiaisVestibulares: Questao[] = [
     ],
     "Depois de vencer a guerra e reunificar o país em 1976, o Vietnã continuou governado pelo Partido Comunista, mas a partir de 1986 abriu a economia à iniciativa privada e ao comércio exterior, num modelo parecido com o da China. Daí o \"formigueiro em atividade\" e as motos importadas. Note que a antiga Saigon aparece no texto com o nome atual: Cidade de Ho Chi Minh.",
     "Vietnã hoje: partido comunista + economia de mercado, como a China."),
-  o("UERJ", "2017 (2º EQ)", 52, "vietna", "medio",
+  o("UERJ", "2017 (2º EQ)", 52, "vietna", "facil",
     "Era um garoto que como eu amava os Beatles e os Rolling Stones (1967)\n\nEra um garoto / Que como eu / Amava os Beatles / E os Rolling Stones\nGirava o mundo / Sempre a cantar / As coisas lindas / Da América\nCantava viva à liberdade / Mas uma carta sem esperar / Da sua guitarra o separou / Fora chamado na América\nStop! Com Rolling Stones / Stop! Com Beatles songs / Mandado foi ao Vietnã / Lutar com vietcongs\n\nEu te amo, meu Brasil (1970)\n\nAs praias do Brasil ensolaradas / O chão onde o país se elevou / A mão de Deus abençoou / Mulher que nasce aqui tem muito mais amor\nO céu do meu Brasil tem mais estrelas / O sol do meu país mais esplendor / A mão de Deus abençoou / Em terras brasileiras vou plantar amor\nEu te amo, meu Brasil, eu te amo / Meu coração é verde, amarelo, branco, azul anil / Eu te amo, meu Brasil, eu te amo / Ninguém segura a juventude do Brasil\n\nBANDA OS INCRÍVEIS. Adaptado de vagalume.com.br.\n\nA banda brasileira Os Incríveis marcou época ao cantar acontecimentos e ideias que afetavam especialmente a vida dos mais jovens no final da década de 1960, como ilustram as letras citadas. Essas letras estão relacionadas, respectivamente, aos seguintes contextos internacional e brasileiro daquele momento:",
     [
       "bipolaridade da Guerra Fria − nacionalismo ufanista",
@@ -149,7 +149,7 @@ export const oficiaisVestibulares: Questao[] = [
     ],
     "A primeira letra fala do jovem americano convocado para lutar contra os vietcongues: a Guerra do Vietnã é o maior exemplo de conflito gerado pela bipolaridade da Guerra Fria. A segunda é do período do \"milagre econômico\" da ditadura brasileira, quando o governo estimulava um patriotismo exagerado, o ufanismo, o mesmo do slogan \"Brasil: ame-o ou deixe-o\".",
     "Vietcongue = guerrilheiro comunista do Vietnã do Sul."),
-  o("UERJ", "2015 (1º EQ)", 56, "jango", "medio",
+  o("UERJ", "2015 (1º EQ)", 56, "jango", "facil",
     "O professor Alcino Salazar, secretário de justiça da Guanabara, declarou a O Globo que a extensão do voto ao analfabeto é perigosa concessão aos inimigos do regime democrático, fundado na verdade e na pureza do princípio da representação.\n\nAdaptado de O Globo, 21/02/1964.\n\nEm sua mensagem ao Congresso Nacional em 15 de março de 1964, o presidente João Goulart escreveu: “Outra discriminação inaceitável atinge milhões de cidadãos que, embora investidos de todas as responsabilidades (...) e integrados à força de trabalho, com seu contingente mais numeroso, são impedidos de votar por serem analfabetos”.\n\nALEIXO, J. C. B; KRAMER, Paulo. Os analfabetos e o voto: da conquista da alistabilidade ao desafio da elegibilidade. Senatus, Brasília, outubro/2000.\n\nAs declarações do professor Alcino Salazar e do presidente João Goulart foram feitas em um momento de polarização na sociedade brasileira, que culminou na instauração do regime autoritário em 31 de março de 1964. Ambas as declarações expressavam, naquele momento, visões antagônicas relacionadas à seguinte dimensão da cidadania:",
     [
       "direitos políticos",
@@ -169,7 +169,7 @@ export const oficiaisVestibulares: Questao[] = [
     ],
     "No comício, Jango assinou o decreto que desapropriava terras às margens de rodovias e ferrovias federais: a reforma agrária era a principal das Reformas de Base e a que tocava diretamente na distribuição da riqueza. O voto dos analfabetos também era proposta dele, mas diz respeito a direitos políticos, não à justiça social. Os direitos trabalhistas já existiam desde Vargas.",
     "Central do Brasil, 13 de março de 1964 = decreto da reforma agrária."),
-  o("UERJ", "2017 (1º EQ)", 49, "jango", "medio",
+  o("UERJ", "2017 (1º EQ)", 49, "jango", "facil",
     "Antecipando-nos à derrocada das forças subversivas, acionadas por dispositivos governamentais, que visavam à destruição do primado da democracia e à implantação de um regime totalitário, tivemos a lucidez e o patriotismo de alertar os poderes constituídos da República para a defesa da ordem jurídica e da Constituição, tão seriamente ameaçadas. Podemos hoje, erradicado o mal das conjuras comuno-sindicalistas, proclamar que a sobrevivência da Nação Brasileira se processou sob a égide intocável do Estado de Direito.\n\nAdaptado de Ata da Reunião Ordinária do Conselho Federal da Ordem dos Advogados do Brasil – OAB, 07/04/1964.\n\nO apoio da Ordem dos Advogados do Brasil à deposição do presidente João Goulart (1961-1964), como indicado no texto, insere-se no contexto de intensas polarizações de opiniões entre partidos e associações. Essas polarizações expressavam posicionamentos distintos acerca da seguinte proposta do governo João Goulart:",
     [
       "implementação das reformas de base",

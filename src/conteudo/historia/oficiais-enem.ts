@@ -26,7 +26,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2009-53",
     "tema": "maio68",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2009",
     "enunciado": "O ano de 1968 ficou conhecido pela efervescência social, tal como se pode comprovar pelo seguinte trecho, retirado de texto sobre propostas preliminares para uma revolução cultural: “É preciso discutir em todos os lugares e com todos. O dever de ser responsável e pensar politicamente diz respeito a todos, não é privilégio de uma minoria de iniciados. Não devemos nos surpreender com o caos das ideias, pois essa é a condição para a emergência de novas ideias. Os pais do regime devem compreender que autonomia não é uma palavra vã; ela supõe a partilha do poder, ou seja, a mudança de sua natureza. Que ninguém tente rotular o movimento atual; ele não tem etiquetas e não precisa delas”.\n\nJournal de la comune étudiante. Textes et documents. Paris: Seuil, 1969 (adaptado)\n\nOs movimentos sociais, que marcaram o ano de 1968,",
@@ -43,7 +43,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2010-33",
     "tema": "jango",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2010",
     "enunciado": "Não é difícil entender o que ocorreu no Brasil nos anos imediatamente anteriores ao golpe militar de 1964. A diminuição da oferta de empregos e a desvalorização dos salários, provocadas pela inflação, levaram a uma intensa mobilização política popular, marcada por sucessivas ondas grevistas de várias categorias profissionais, o que aprofundou as tensões sociais. Dessa vez, as classes trabalhadoras se recusaram a pagar o pato pelas sobras” do modelo econômico juscelinista.\n\nMENDONÇA, S. R. A industrialização Brasileira. São Paulo: Moderna, 2002 (adaptado)\n\nSegundo o texto, os conflitos sociais ocorridos no início dos anos 1960 decorreram principalmente",
@@ -59,7 +59,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2010-42",
     "tema": "figuras",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2010",
     "enunciado": "As cortes de apelação rejeitaram mais de 10 mil habeas corpus nos casos das pessoas desaparecidas. Nos tribunais militares, todas as causas foram concluídas com suspensões temporárias ou definitivas, e os desaparecimentos políticos tiveram apenas trâmite formal na Justiça. Assim, o Poder Judiciário contribuiu para que os agentes estatais ficassem impunes.\n\nDisponível em: http://www.cartamaior.com.br. Acesso em: 20 jul. 2010 (adaptado).\n\nSegundo o texto, durante a ditadura chilena na década de 1970, a relação entre os poderes Executivo e Judiciário caracterizava-se pela",
@@ -75,7 +75,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2011-41",
     "tema": "jango",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2011",
     "enunciado": "A consolidação do regime democrático no Brasil contra os extremismos da esquerda e da direita exige ação enérgica e permanente no sentido do aprimoramento das instituições políticas e da realização de reformas corajosas no terreno econômico, financeiro e social.\n\n Mensagem programática da União Democrática Nacional (UDN) — 1957.\n\nOs trabalhadores deverão exigir a constituição de um governo nacionalista e democrático, com participação dos trabalhadores para a realização das seguintes medidas: a) Reforma bancária progressista; b)Reforma agrária que extinga o latifúndio; c) Regulamentação da Lei de Remessas de Lucros.\n\nManifesto do Comando Geral dos Trabalhadores (CGT) — 1962. BONAVIDES, P; AMARAL, R. Textos políticos da história do Brasil. Brasília: Senado Federal, 2002.\n\nNos anos 1960 eram comuns as disputas pelo significado de termos usados no debate político, como democracia e reforma. Se, para os setores aglutinados em torno da UDN, as reformas deveriam assegurar o livre mercado, para aqueles organizados no CGT, elas deveriam resultar em",
@@ -91,7 +91,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2011-42",
     "tema": "jango",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2011",
     "enunciado": "Em meio às turbulências vividas na primeira metade dos anos 1960, tinha-se a impressão de que as tendências de esquerda estavam se fortalecendo na área cultural. O Centro Popular de Cultura (CPC) da União Nacional dos Estudantes (UNE) encenava peças de teatro que faziam agitação e propaganda em favor da luta pelas reformas de base e satirizavam o “imperialismo” e seus “aliados internos”.\n\nKONDER, L. História das Ideias Socialistas no Brasil. São Paulo: Expressão Popular, 2003\n\nNo início da década de 1960, enquanto vários setores da esquerda brasileira consideravam que o CPC da UNE era uma importante forma de conscientização das classes trabalhadoras, os setores conservadores e de direita (políticos vinculados à União Democrática Nacional – UDN -, Igreja Católica, grandes empresários etc.) entendiam que esta organização",
@@ -123,7 +123,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2012-22",
     "tema": "maio68",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2012",
     "enunciado": "[A questão traz a foto de jovens em protesto contra a Guerra do Vietnã, com o cartaz \"Amor e não guerra\".]\n\nNos anos que se seguiram à Segunda Guerra, movimentos como o Maio de 1968 ou a campanha contra a Guerra do Vietnã culminaram no estabelecimento de diferentes formas de participação política. Seus slogans, tais como “Quando penso em revolução quero fazer amor”, se tornaram símbolos da agitação cultural nos anos 1960, cuja inovação relacionava-se",
@@ -155,7 +155,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2014-42",
     "tema": "jango",
-    "nivel": "dificil",
+    "nivel": "medio",
     "estilo": "ENEM",
     "oficial": "ENEM 2014",
     "enunciado": "TEXTO I\n\nO presidente do jornal de maior circulação do país destacava também os avanços econômicos obtidos naqueles vinte anos, mas, ao justificar sua adesão aos militares em 1964, deixava clara sua crença de que a intervenção fora imprescindível para a manutenção da democracia.\n\nDisponivel em: http://oglobo.globo.com. Acesso em: 1 set. 2013 (adaplado).\n\nTEXTO II\n\nNada pode ser colocado em compensação à perda das liberdades individuais. Não existe nada de bom quando se aceita uma solução autoritária.\n\nFICO, C. A educação e o golpe de 1964. Disponivel em: www.brasilrecente.com.Acesso em: 4 abro 2014 (adaptado).\n\nEmbora enfatizem a defesa da democracia, as visões do movimento político-militar de 1964 divergem ao focarem, respectivamente:",
@@ -171,7 +171,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2016-13",
     "tema": "figuras",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2016",
     "enunciado": "A Operação Condor está diretamente vinculada às experiências históricas das ditaduras civil-militares que se disseminaram pelo Cone Sul entre as décadas de 1960 e 1980. Depois do Brasil (e do Paraguai de Stroessner), foi a vez da Argentina (1966), Bolívia (1966 e 1971), Uruguai e Chile (1973) e Argentina (novamente, em 1976). Em todos os casos se instalaram ditaduras civil-militares (em menor ou maior medida) com base na Doutrina de Segurança Nacional e tendo como principais características um anticomunismo militante, a identificação do inimigo interno, a imposição do papel político das Forças Armadas e a definição de fronteiras ideológicas.\n\nPADRÓS, E. S. et al. Ditadura de Segurança Nacional no Rio Grande do Sul (1964-1985). história e memória. Porto Alegre: Corag, 2009 (adaptado).\n\nLevando-se em conta o contexto em que foi criada, a referida operação tinha como objetivo coordenar a",
@@ -187,7 +187,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2017-81",
     "tema": "dutra",
-    "nivel": "dificil",
+    "nivel": "medio",
     "estilo": "ENEM",
     "oficial": "ENEM 2017",
     "enunciado": "Estão aí, como se sabe, dois candidatos à presidência, os senhores Eduardo Gomes e Eurico Dutra, e um terceiro, o senhor Getúlio Vargas, que deve ser candidato de algum grupo político oculto, mas é também o candidato popular. Porque há dois “queremos”: o “queremos” dos que querem ver se continuam nas posições e o “queremos” popular… Afinal, o que é que o senhor Getúlio Vargas é? É fascista? É comunista? É ateu? É cristão? Quer sair? Quer ficar? O povo, entretanto, parece que gosta dele por isso mesmo, porque ele é “à moda da casa”.\n\nA Democracia. 16 set. 1945, apud GOMES, A. C.; D’ARAÚJO, M. C. Getulismo e trabalhismo. São Paulo: Ática, 1989.\n\nO movimento político mencionado no texto caracterizou-se por",
@@ -204,7 +204,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2017-83",
     "tema": "jango",
-    "nivel": "dificil",
+    "nivel": "medio",
     "estilo": "ENEM",
     "oficial": "ENEM 2017",
     "enunciado": "No período anterior ao golpe militar de 1964, os documentos episcopais indicavam para os bispos que o desenvolvimento econômico, e claramente o desenvolvimento capitalista, orientando-se no sentido da justa distribuição da riqueza, resolveria o problema da miséria rural e, consequentemente, suprimiria a possibilidade do proselitismo e da expansão comunista entre os camponeses. Foi nesse sentido que o golpe de Estado, de 31 de março de 1964, foi acolhido pela Igreja.\n\nMARTINS, J. S. A política do Brasil: lúmpen e místico. São Paulo: Contexto, 2011 (adaptado).\n\nEm que pesem as divergências no interior do clero após a instalação da ditadura civil-militar, o posicionamento mencionado no texto fundamentou-se no entendimento da hierarquia católica de que o(a)",
@@ -237,7 +237,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2018-55",
     "tema": "guerra-fria",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2018",
     "enunciado": "Os soviéticos tinham chegado a Cuba muito cedo na década de 1960, esgueirando-se pela fresta aberta pela imediata hostilidade norte-americana em relação ao processo social revolucionário. Durante três décadas os soviéticos mantiveram sua presença em Cuba com bases e ajuda militar, mas, sobretudo, com todo o apoio econômico que, como saberíamos anos mais tarde, mantinha o país à tona, embora nos deixasse em dívida com os irmãos soviéticos – e depois com seus herdeiros russos – por cifras que chegavam a US$ 32 bilhões. Ou seja, o que era oferecido em nome da solidariedade socialista tinha um preço definido.\n\nPADURA, L. Cuba e os russos. Folha de São Paulo, 19 jul. 2014 (adaptado).\n\nO texto indica que durante a Guerra Fria as relações internas em um mesmo bloco foram marcadas pelo(a)",
@@ -253,7 +253,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2018-58",
     "tema": "jango",
-    "nivel": "medio",
+    "nivel": "facil",
     "estilo": "ENEM",
     "oficial": "ENEM 2018",
     "enunciado": "A democracia que eles pretendem é a democracia dos privilégios, a democracia da intolerância e do ódio. A democracia que eles querem é para liquidar com a Petrobras, é a democracia dos monopólios, nacionais e internacionais, a democracia que pudesse lutar contra o povo. Ainda ontem eu afirmava que a democracia jamais poderia ser ameaçada pelo povo, quando o povo livremente vem para as praças – as praças que são do povo. Para as ruas – que são do povo.\n\nDisponível em: www.revistadehistoria.com.br/secao/artigos/discurso-de-joao-goulart-nocomicio-da-central. Acesso em: 29 out. 2015\n\nEm um momento de radicalização política, a retórica no discurso do presidente João Goulart, proferido no comício da Central do Brasil, buscava justificar a necessidade de",
@@ -270,7 +270,7 @@ export const oficiaisEnem: Questao[] = [
   {
     "id": "enem-2018-61",
     "tema": "vargas",
-    "nivel": "dificil",
+    "nivel": "medio",
     "estilo": "ENEM",
     "oficial": "ENEM 2018",
     "enunciado": "Programa do Partido Social Democrático (PSD)    Capitais estrangeiros É indispensável manter clima propício à entrada de capitais estrangeiros. A manutenção desse clima recomenda a adoção de normas disciplinadoras dos investimentos e suas rendas, visando reter no país a maior parcela possível dos lucros auferidos.\n\nPrograma da União Democrática Nacional (UDN)  O capital Apelar para o capital estrangeiro, necessário para os empreendimentos da reconstrução nacional e, sobretudo, para o aproveitamento das nossas reservas inexploradas, dando-lhe um tratamento equitativo e liberdade para a saída dos juros.\n\nCHACON, V. História dos partidos brasileiros: discurso e práxis dos seus programas. Brasília: UnB, 1981 (adaptado)\n\nConsiderando as décadas de 1950 e 1960 no Brasil, os trechos dos programas do PSD e UDN convergiam na defesa da",
@@ -299,5 +299,90 @@ export const oficiaisEnem: Questao[] = [
     ],
     "explicacao": "O suicídio de Vargas, em 24 de agosto de 1954, provocou enorme comoção: multidões saíram às ruas, atacaram jornais de oposição e a embaixada dos EUA. A reação popular fez recuar a UDN e os militares que exigiam sua saída, e não houve intervenção militar naquele momento.",
     "lembre": "O tiro saiu pela culatra para a oposição."
+  },
+  {
+    "id": "enem-2009-55",
+    "tema": "guerra-fria",
+    "nivel": "facil",
+    "estilo": "ENEM",
+    "oficial": "ENEM 2009",
+    "enunciado": "O fim da Guerra Fria e da bipolaridade, entre as décadas de 1980 e 1990, gerou expectativas de que seria instaurada uma ordem internacional marcada pela redução de conflitos e pela multipolaridade. O panorama estratégico do mundo pós-Guerra Fria apresenta",
+    "alternativas": [
+      "O aumento de conflitos internos associados ao nacionalismo, às disputas étnicas, ao extremismo religioso e ao fortalecimento de ameaças como o terrorismo, o tráfico de drogas e o crime organizado.",
+      "O fim da corrida armamentista e a redução dos gastos militares das grandes potências, o que se traduziu em maior estabilidade nos continentes europeu e asiático, que tinham sido palco da Guerra Fria.",
+      "O desengajamento das grandes potências, pois as intervenções militares em regiões assoladas por conflitos passaram a ser realizadas pela Organização das Nações Unidas (ONU), com maior envolvimento de países emergentes.",
+      "A plena vigência do Tratado de Não Proliferação, que afastou a possibilidade de um conflito nuclear como ameaça global, devido à crescente consciência política internacional acerca desse perigo.",
+      "A condição dos EUA como única superpotência, mas que se submetem às decisões da ONU no que concerne às ações militares."
+    ],
+    "explicacao": "A disputa entre os blocos congelava rivalidades locais. Com o fim da União Soviética vieram as guerras da Iugoslávia, os conflitos no Cáucaso e na África e, depois, o terrorismo internacional. As grandes potências não se desengajaram, e os EUA agiram várias vezes sem aval da ONU, como no Iraque em 2003.",
+    "lembre": "O fim da Guerra Fria não trouxe paz: trocou um grande conflito por muitos pequenos."
+  },
+  {
+    "id": "enem-2015-9",
+    "tema": "descolonizacao",
+    "nivel": "facil",
+    "estilo": "ENEM",
+    "oficial": "ENEM 2015",
+    "enunciado": "Voz do sangue\n\nPalpitam-me\nos sons do batuque\ne os ritmos melancólicos do blue.\n\nÓ negro esfarrapado\ndo Harlem\nó dançarino de Chicago\nó negro servidor do South\n\nÓ negro da África\nnegros de todo o mundo\n\nEu junto\nao vosso magnífico canto\na minha pobre voz\nos meus humildes ritmos.\n\nEu vos acompanho\npelas emaranhadas Áfricas\ndo nosso Rumo.\n\nEu vos sinto\nnegros de todo o mundo\neu vivo a nossa história\nmeus irmãos.\n\nDisponível em: www.agostinhoneto.org. Acesso em: 30 jun. 2015.\n\nNesse poema, o líder angolano Agostinho Neto, na década de 1940, evoca o pan-africanismo com o objetivo de",
+    "alternativas": [
+      "Conclamar as populações negras de diferentes países a apoiar as lutas por igualdade e independência.",
+      "Incitar a luta por políticas de ações afirmativas na América e na África.",
+      "Reconhecer as desigualdades sociais entre os negros de Angola e dos Estados Unidos.",
+      "Descrever o quadro de pobreza após os processos de independência no continente africano.",
+      "Solicitar o engajamento dos negros estadunidenses na luta armada pela independência em Angola."
+    ],
+    "explicacao": "O pan-africanismo afirma a unidade dos povos negros da África e da diáspora. O poema aproxima o Harlem, Chicago e a África num mesmo \"nós\". Nos anos 1940 Angola ainda era colônia portuguesa: não havia independência a descrever nem luta armada, que só começaria em 1961. Agostinho Neto seria o primeiro presidente do país, em 1975.",
+    "lembre": "Pan-africanismo = \"negros de todo o mundo\", um só destino."
+  },
+  {
+    "id": "enem-2015-24",
+    "tema": "descolonizacao",
+    "nivel": "medio",
+    "estilo": "ENEM",
+    "oficial": "ENEM 2015",
+    "enunciado": "A participação da África na Segunda Guerra Mundial deve ser apreciada sob a ótica da escolha entre vários demônios. O seu engajamento não foi um processo de colaboração com o imperialismo, mas uma luta contra uma forma de hegemonia ainda mais perigosa.\n\nMAZRUI, A. “Procurai primeiramente o reino do político…” In: MAZRUI, A.; WONDJI, C. (Org.). História geral da África: África desde 1925. Brasília: Unesco, 2010.\n\nPara o autor, a “forma de hegemonia” e uma de suas características que explicam o engajamento dos africanos no processo analisado foram:",
+    "alternativas": [
+      "Fascismo / adoção do determinismo biológico.",
+      "Comunismo / rejeição da democracia liberal.",
+      "Capitalismo / devastação do ambiente natural.",
+      "Socialismo / planificação da economia nacional.",
+      "Colonialismo / imposição da missão civilizatória."
+    ],
+    "explicacao": "Os africanos lutaram ao lado de suas metrópoles porque o nazifascismo, fundado na hierarquia das raças, era um mal maior que o colonialismo. A pegadinha é a última alternativa: o colonialismo é o \"demônio\" menor do texto, o imperialismo com o qual eles não estavam colaborando. A experiência desses soldados alimentou depois os movimentos de independência.",
+    "lembre": "Entre dois demônios, escolheram combater o pior, e voltaram querendo liberdade."
+  },
+  {
+    "id": "enem-2019-82",
+    "tema": "jk",
+    "nivel": "facil",
+    "estilo": "ENEM",
+    "oficial": "ENEM 2019",
+    "enunciado": "Tratava-se agora de construir: e construir um ritmo novo. Para tanto, era necessário convocar todas as forças vivas da Nação, todos os homens que, com vontade de trabalhar e confiança no futuro, pudessem erguer, num tempo novo, um novo Tempo. E, à grande convocação que conclamava o povo para a gigantesca tarefa, começaram a chegar de todos os cantos da imensa pátria os trabalhadores: os homens simples e quietos, com pés de raiz, rostos de couro e mãos de pedra, e que, no calcanho, em carro de boi, em lombo de burro, em paus-de-arara, por todas as formas possíveis e imagináveis, em sua mudez cheia de esperança, muitas vezes deixando para trás mulheres e filhos a aguardar suas promessas de melhores dias; foram chegando de tantos povoados, tantas cidades cujos nomes pareciam cantar saudades aos seus ouvidos, dentro dos antigos ritmos da imensa pátria… Terra de sol, Terra de luz… Brasil! Brasil! Brasil!\n\nMORAES, V.; JOBIM, A. C. Brasília, sinfonia da alvorada. III – A chegada dos candangos. Disponível em: www.viniciusdemoraes.com.br. Acesso em: 14 ago. 2012 (adaptado).\n\nNo texto, a narrativa produzida sobre a construção de Brasília articula os elementos políticos e socioeconômicos indicados, respectivamente, em:",
+    "alternativas": [
+      "Apelo simbólico e migração inter-regional.",
+      "Organização sindical e expansão do capital.",
+      "Segurança territorial e estabilidade financeira.",
+      "Consenso partidário e modernização rodoviária.",
+      "Perspectiva democrática e eficácia dos transportes."
+    ],
+    "explicacao": "O elemento político é o discurso mobilizador: \"um tempo novo\", a \"gigantesca tarefa\", a nação convocada. O socioeconômico é a chegada dos candangos, trabalhadores vindos sobretudo do Nordeste e de Minas, em paus-de-arara. Não havia estabilidade financeira (a obra alimentou a inflação) nem consenso partidário (a UDN atacou Brasília o tempo todo).",
+    "lembre": "Candango = o migrante que ergueu Brasília."
+  },
+  {
+    "id": "enem-2023-80",
+    "tema": "jango",
+    "nivel": "facil",
+    "estilo": "ENEM",
+    "oficial": "ENEM 2023",
+    "enunciado": "O Golpe Militar de 1964 foi implacável no combate ao que restava das Ligas Camponesas, generalizadas na década anterior. No entanto, em relação aos sindicatos, sua atitude foi ambígua. Por meio de acordos com os Estados Unidos, foram concebidos centros sindicais e cursos de liderança com base em princípios conservadores e ministrados por membros da Igreja Católica.\n\nDEL PRIORE, M.; VENÂNCIO, R. Uma história da vida rural no Brasil. Rio de Janeiro: Ediouro, 2006 (adaptado).\n\nOs sindicatos rurais foram tratados da forma descrita no texto porque o governo pretendia utilizá-los para",
+    "alternativas": [
+      "Controlar as tensões políticas.",
+      "Limitar a legislação trabalhista.",
+      "Divulgar o programa populista.",
+      "Regularizar a propriedade da terra.",
+      "Estimular a oferta de mão de obra."
+    ],
+    "explicacao": "As Ligas Camponesas, autônomas e radicais, foram esmagadas. Já os sindicatos rurais, legalizados no governo Jango, foram mantidos sob tutela, com lideranças formadas em bases conservadoras: a mesma lógica de controle do sindicalismo urbano desde Vargas. O objetivo era esvaziar o conflito no campo, não promover reforma agrária.",
+    "lembre": "Liga (autônoma) é reprimida; sindicato (tutelado) é aproveitado."
   }
 ];

@@ -27,7 +27,7 @@ const f = (
 });
 
 export const oficiaisFuvest: Questao[] = [
-  f(2007, 44, "jk", "medio",
+  f(2007, 44, "jk", "facil",
     "A inauguração de Brasília, depois de sua rápida construção durante o governo de Juscelino Kubitschek (1956 – 1961), trouxe desdobramentos diversos para o país. Entre eles,",
     [
       "incentivo à integração econômica nacional e aumento da inflação.",
@@ -38,7 +38,7 @@ export const oficiaisFuvest: Questao[] = [
     ],
     "Brasília e as rodovias que a ligaram ao resto do país (como a Belém–Brasília) integraram o interior à economia nacional. O custo da obra, pago em boa parte com emissão de moeda, alimentou a inflação. A pegadinha é a última alternativa: o endividamento externo cresceu, mas o Centro-Oeste não virou área industrial. JK priorizou rodovias, não ferrovias, e atraiu capital estrangeiro em vez de afastá-lo.",
     "Brasília = integração + inflação."),
-  f(2017, 44, "jk", "dificil",
+  f(2017, 44, "jk", "medio",
     "O período que vai de 1956 a 1967 é considerado como a primeira fase da industrialização pesada no Brasil.\n\nBarjas Negri. Concentração e desconcentração industrial em São Paulo – 1880–1990. Campinas: Unicamp, 1996.\n\nSobre as características da industrialização brasileira no período de 1956 a 1967, é correto afirmar que",
     [
       "houve uma associação entre investimentos no setor estatal e a entrada de capital estrangeiro, que propiciaram a instalação de plantas produtoras de bens de capital.",
@@ -49,7 +49,7 @@ export const oficiaisFuvest: Questao[] = [
     ],
     "O período começa com JK, e a marca do seu modelo é o tripé: o Estado investe em infraestrutura e indústria de base, e o capital estrangeiro entra com as multinacionais. O Plano de Metas não visava só Rio e São Paulo, cuja indústria já não era incipiente; a indústria têxtil é muito anterior; e as montadoras se concentraram no ABC paulista, ao longo da Via Anchieta, não em direção a Ribeirão Preto.",
     "JK = Estado + capital estrangeiro."),
-  f(2013, 55, "guerra-fria", "medio",
+  f(2013, 55, "guerra-fria", "facil",
     "O que acontece quando a gente se vê duplicado na televisão? (...) Aprendemos não só durante os anos de formação mas também na prática a lidar com nós mesmos com esse “eu” duplo. E, mais tarde, (...) em 1974, ainda detido para averiguação na penitenciária de Colônia-Ossendorf, quando me foi atendida, sem problemas, a solicitação de um aparelho de televisão na cela, apenas durante o período da Copa do Mundo, os acontecimentos na tela me dividiram em vários sentidos. Não quando os poloneses jogaram uma partida fantástica sob uma chuva torrencial, não quando a partida contra a Austrália foi vitoriosa e houve um empate contra o Chile, aconteceu quando a Alemanha jogou contra a Alemanha. Torcer para quem? Eu ou eu torci para quem? Para que lado vibrar? Qual Alemanha venceu?\n\nGunter Grass. Meu século. Rio de Janeiro: Record, 2000, p. 237. Adaptado.\n\nO trecho acima, extraído de uma obra literária, alude a um acontecimento diretamente relacionado",
     [
       "à Guerra Fria e à divisão política da Alemanha em duas partes, a “ocidental” e a “oriental”.",
@@ -59,7 +59,7 @@ export const oficiaisFuvest: Questao[] = [
       "ao caráter despolitizado dos esportes em um contexto de capitalismo globalizado.",
     ],
     "\"A Alemanha jogou contra a Alemanha\": na Copa de 1974, a Alemanha Ocidental (capitalista) enfrentou a Alemanha Oriental (socialista). O país estava dividido desde 1949, resultado direto da Guerra Fria, e só se reunificou em 1990, depois da queda do Muro de Berlim."),
-  f(2013, 54, "descolonizacao", "dificil",
+  f(2013, 54, "descolonizacao", "medio",
     "Fosse com militares ou civis, a África esteve por vários anos entregue a ditadores. Em alguns países, vigorava uma espécie de semidemocracia, com uma oposição consentida e controlada, um regime que era, em última análise, um governo autoritário. A única saída para os insatisfeitos e também para aqueles que tinham ambições de poder passou a ser a luta armada. Alguns países foram castigados por ferozes guerras civis, que, em certos casos, foram alongadas por interesses extracontinentais.\n\nAlberto da Costa e Silva. A África explicada aos meus filhos. Rio de Janeiro: Agir, 2008, p. 139.\n\nEntre os exemplos do alongamento dos conflitos internos nos países africanos em função de “interesses extracontinentais”, a que se refere o texto, pode-se citar a participação",
     [
       "da União Soviética e Cuba nas guerras civis de Angola e Moçambique, na década de 1970, motivada pelas rivalidades e interesses geopolíticos característicos da Guerra Fria.",
@@ -69,7 +69,7 @@ export const oficiaisFuvest: Questao[] = [
       "da China na luta pela estabilização política no Sudão e na Etiópia, na década de 1960, motivada pelas necessidades do governo Mao Tse-Tung em obter fornecedores de petróleo.",
     ],
     "Depois da independência (1975), Angola e Moçambique mergulharam em guerras civis nas quais URSS e Cuba apoiavam os governos de orientação socialista, enquanto EUA e África do Sul apoiavam os grupos rivais. A Guerra Fria entrou nos novos países e prolongou os conflitos. Repare nos erros das outras: o apartheid é de 1948 e foi criado pelos próprios sul-africanos brancos; a França lutou contra a independência da Argélia, não a favor."),
-  f(2018, 63, "descolonizacao", "dificil",
+  f(2018, 63, "descolonizacao", "medio",
     "No que se refere à crise do colonialismo português na África na segunda metade do século XX,",
     [
       "o movimento de independência colonial foi decisivo para o processo de transformação política em Portugal, ao acelerar a crise do regime autoritário nascido no período entre guerras.",
@@ -80,7 +80,7 @@ export const oficiaisFuvest: Questao[] = [
     ],
     "As guerras coloniais em Angola, Moçambique e Guiné-Bissau, iniciadas em 1961, desgastaram tanto Portugal que os próprios militares derrubaram a ditadura salazarista na Revolução dos Cravos (1974). Ou seja, a luta das colônias ajudou a mudar a metrópole. As independências foram resultado de guerra, não de negociação pacífica, e estiveram totalmente envolvidas na Guerra Fria.",
     "A colônia derrubou a ditadura da metrópole: guerras coloniais → Cravos (1974)."),
-  f(2009, 35, "figuras", "medio",
+  f(2009, 35, "figuras", "facil",
     "Existem semelhanças entre as ditaduras militares brasileira (1964-1985), argentina (1976-1983), uruguaia (1973-1985) e chilena (1973-1990).\n\nTodas elas",
     [
       "combateram um inimigo comum, os grupos esquerdistas, recorrendo a métodos violentos.",
@@ -90,7 +90,7 @@ export const oficiaisFuvest: Questao[] = [
       "defenderam programas econômicos nacionalistas, promovendo o desenvolvimento industrial de seus países.",
     ],
     "As ditaduras do Cone Sul nasceram no contexto da Guerra Fria e tinham em comum a doutrina de segurança nacional: o inimigo era interno, a esquerda, e contra ele valiam prisão, tortura e assassinato. Na economia elas diferiam: o Chile de Pinochet, por exemplo, foi neoliberal, e não nacionalista. Também não se apoiavam em partidos nem no populismo, que justamente derrubaram."),
-  f(2018, 65, "figuras", "medio",
+  f(2018, 65, "figuras", "facil",
     "Aqui no Chile estava se construindo, entre imensas dificuldades, uma sociedade verdadeiramente justa, erguida sobre a base de nossa soberania, de nosso orgulho nacional, do heroísmo dos melhores habitantes do Chile. Do nosso lado, do lado da revolução chilena, estavam a constituição e a lei, a democracia e a esperança.\n\nPablo Neruda. Confesso que vivi. Memórias. Rio de Janeiro: Difel, 1980.\n\nNesse texto,",
     [
       "“democracia” alude a um traço peculiar da via chilena para o socialismo, pois o presidente Salvador Allende chegou ao poder pelo voto.",
@@ -101,7 +101,7 @@ export const oficiaisFuvest: Questao[] = [
     ],
     "Neruda, poeta comunista e amigo de Allende, destaca o que tornava o caso chileno único: um governo socialista eleito, que respeitava a Constituição. Allende nacionalizou o cobre (não privatizou), a Unidade Popular não deu golpe (ela é que foi derrubada por Pinochet) e os Estados Unidos trabalharam contra o governo.",
     "Allende foi ELEITO: socialismo pelo voto."),
-  f(2019, 83, "figuras", "dificil",
+  f(2019, 83, "figuras", "medio",
     "Sobre a revolução cultural ocorrida na China, a partir de 1966, é correto afirmar que se tratou de",
     [
       "expurgo de cunho anti-intelectualista que recusava as influências ocidental e soviética.",
@@ -112,7 +112,7 @@ export const oficiaisFuvest: Questao[] = [
     ],
     "A Revolução Cultural foi lançada pelo próprio Mao, e não contra ele, para afastar rivais no partido e eliminar \"influências burguesas\". Jovens da Guarda Vermelha perseguiram professores, escritores e dirigentes. A China já estava rompida com a URSS, por isso a recusa também da influência soviética. Xintoísmo é religião japonesa, e a abertura ao mercado só veio depois da morte de Mao, com Deng Xiaoping.",
     "Revolução Cultural: feita POR Mao, contra intelectuais."),
-  f(2019, 88, "figuras", "medio",
+  f(2019, 88, "figuras", "facil",
     "Em junho de 1995, a seleção de rugby da África do Sul conquistou a Copa do Mundo dessa modalidade esportiva ao vencer a equipe da Nova Zelândia por 15 a 12, na cidade de Johannesburgo. O capitão sul-africano, François Pienaar, recebeu a taça destinada à seleção campeã das mãos de Nelson Mandela.\n\nEsse acontecimento esportivo",
     [
       "é um dos marcos do fim do Apartheid, devido à constituição de uma primeira seleção multirracial representando a África do Sul.",
