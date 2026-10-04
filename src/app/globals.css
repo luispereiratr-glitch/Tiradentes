@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
+  --font-titulo: var(--fonte-titulo), Georgia, serif;
+}
+
+@theme {
+  --color-papel: #f6f1e7;
+  --color-papel-2: #ede6d6;
+  --color-cartao: #fffdf8;
+  --color-linha: #ddd4c0;
+  --color-tinta: #1f2a24;
+  --color-tinta-2: #5b665e;
+  --color-musgo: #2f5d46;
+  --color-musgo-escuro: #21432f;
+  --color-musgo-claro: #dce8df;
+  --color-barro: #c4623a;
+  --color-barro-claro: #f6dfd3;
+  --color-ouro: #d09a2f;
+  --color-erro: #a93a2a;
+  --color-erro-claro: #f7dfd9;
+
+  --animate-subir: subir 0.28s ease-out both;
+  --animate-pulo: pulo 0.4s ease-out both;
+  --animate-tremer: tremer 0.3s ease-in-out both;
+
+  @keyframes subir {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulo {
+    0% { transform: scale(0.9); }
+    60% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+  @keyframes tremer {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+}
+
+html {
+  background: var(--color-papel);
+  color: var(--color-tinta);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-titulo);
+  letter-spacing: -0.01em;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-musgo);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
