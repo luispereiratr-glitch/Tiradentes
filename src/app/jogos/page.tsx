@@ -2,39 +2,9 @@
 
 import Link from "next/link";
 import { Casca } from "@/components/Casca";
-import { Icone, type NomeIcone } from "@/components/Icone";
+import { Icone } from "@/components/Icone";
 import { useApp } from "@/lib/app";
-
-const JOGOS: { id: string; nome: string; descricao: string; icone: NomeIcone; cor: string }[] = [
-  {
-    id: "relampago",
-    nome: "Relâmpago",
-    descricao: "60 segundos. Quantas você acerta em sequência?",
-    icone: "raio",
-    cor: "bg-barro-claro text-barro",
-  },
-  {
-    id: "quem-sou-eu",
-    nome: "Quem sou eu?",
-    descricao: "Descubra a figura histórica com o mínimo de pistas.",
-    icone: "pessoas",
-    cor: "bg-musgo-claro text-musgo-escuro",
-  },
-  {
-    id: "cronologia",
-    nome: "Linha do tempo",
-    descricao: "Coloque os acontecimentos na ordem certa.",
-    icone: "relogio",
-    cor: "bg-papel-2 text-tinta",
-  },
-  {
-    id: "memoria",
-    nome: "Memória",
-    descricao: "Ligue cada figura ao que ela fez.",
-    icone: "livro",
-    cor: "bg-[#f3e6c4] text-[#7a5a12]",
-  },
-];
+import { JOGOS } from "@/lib/jogos";
 
 function Lista() {
   const { progresso } = useApp();

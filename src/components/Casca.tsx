@@ -12,6 +12,7 @@ const ABAS: { href: string; nome: string; icone: NomeIcone }[] = [
   { href: "/jogos", nome: "Jogos", icone: "raio" },
   { href: "/revisao", nome: "Revisão", icone: "ciclo" },
   { href: "/figuras", nome: "Figuras", icone: "pessoas" },
+  { href: "/ranking", nome: "Ranking", icone: "trofeu" },
   { href: "/perfil", nome: "Perfil", icone: "perfil" },
 ];
 

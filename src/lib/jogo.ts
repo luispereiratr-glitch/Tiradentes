@@ -1,9 +1,10 @@
-import type { Nivel, Progresso, Questao } from "./tipos";
+import type { Nivel, Placar, Progresso, Questao } from "./tipos";
 
 export const NIVEIS: { id: Nivel; nome: string; xp: number }[] = [
   { id: "facil", nome: "Fácil", xp: 10 },
   { id: "medio", nome: "Médio", xp: 15 },
   { id: "dificil", nome: "Difícil", xp: 25 },
+  { id: "desafio", nome: "Desafio", xp: 35 },
 ];
 
 export const VAZIO: Progresso = {
@@ -12,13 +13,15 @@ export const VAZIO: Progresso = {
   questoes: {},
   licoes: {},
   recordes: {},
+  semana: { inicio: "", xp: 0 },
 };
 
 /** Dias até a próxima revisão, por caixa (repetição espaçada). */
 const INTERVALOS = [0, 1, 3, 7, 14];
 
-export function dia(deslocamento = 0): string {
-  const d = new Date();
+/** Data `AAAA-MM-DD` no fuso do aparelho. Com `base`, conta os dias a partir dela e não de hoje. */
+export function dia(deslocamento = 0, base?: string): string {
+  const d = base ? new Date(`${base}T12:00:00`) : new Date();
   d.setDate(d.getDate() + deslocamento);
   const p = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
@@ -49,8 +52,15 @@ function marcarDia(p: Progresso): Progresso["dias"] {
   return { ultimo: hoje, sequencia, melhor: Math.max(p.dias.melhor, sequencia) };
 }
 
+/** Domingo da semana de `hoje`: o ranking semanal zera a cada domingo. */
+export function inicioDaSemana(hoje = dia()): string {
+  return dia(-new Date(`${hoje}T12:00:00`).getDay(), hoje);
+}
+
 export function somarXp(p: Progresso, xp: number): Progresso {
-  return { ...p, xp: p.xp + xp, dias: marcarDia(p) };
+  const inicio = inicioDaSemana();
+  const naSemana = p.semana.inicio === inicio ? p.semana.xp : 0;
+  return { ...p, xp: p.xp + xp, dias: marcarDia(p), semana: { inicio, xp: naSemana + xp } };
 }
 
 export function registrarResposta(p: Progresso, q: Questao, acertou: boolean): Progresso {
@@ -69,8 +79,26 @@ export function registrarResposta(p: Progresso, q: Questao, acertou: boolean): P
 }
 
 /** Sequência só vale se a pessoa estudou hoje ou ontem. */
-export function sequenciaAtiva(p: Progresso): number {
-  return p.dias.ultimo === dia() || p.dias.ultimo === dia(-1) ? p.dias.sequencia : 0;
+export function sequenciaAtiva(p: Progresso, hoje = dia()): number {
+  return p.dias.ultimo === hoje || p.dias.ultimo === dia(-1, hoje) ? p.dias.sequencia : 0;
+}
+
+/** Resume o progresso de alguém na linha que aparece no ranking. */
+export function placarDe(id: string, usuario: string, dados: Partial<Progresso>, hoje = dia()): Placar {
+  const p = { ...VAZIO, ...dados };
+  const registros = Object.values(p.questoes);
+  const acertos = registros.reduce((s, r) => s + r.a, 0);
+  const tentativas = registros.reduce((s, r) => s + r.a + r.e, 0);
+  return {
+    id,
+    usuario,
+    xp: p.xp,
+    xpSemana: p.semana.inicio === inicioDaSemana(hoje) ? p.semana.xp : 0,
+    sequencia: sequenciaAtiva(p, hoje),
+    acertadas: registros.filter((r) => r.a > 0).length,
+    precisao: tentativas ? Math.round((100 * acertos) / tentativas) : null,
+    recordes: p.recordes,
+  };
 }
 
 /** Questões já vistas que estão na hora de revisar, as mais erradas primeiro. */

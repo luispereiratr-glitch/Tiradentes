@@ -6,7 +6,7 @@
 import { disciplina } from "../src/conteudo";
 import type { Questao } from "../src/lib/tipos";
 
-const NIVEIS = ["facil", "medio", "dificil"] as const;
+const NIVEIS = ["facil", "medio", "dificil", "desafio"] as const;
 const pct = (n: number, total: number) => (total ? `${Math.round((100 * n) / total)}%` : "–");
 
 function posicaoPorTamanho(q: Questao): "maior" | "menor" | "meio" {

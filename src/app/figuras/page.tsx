@@ -15,7 +15,7 @@ function Fichas() {
     <>
       <h1 className="mb-1 text-[28px] font-semibold">Figuras</h1>
       <p className="mb-5 leading-relaxed text-tinta-2">
-        Os nomes que caem na prova. Cada ficha tem um gancho para você não confundir ninguém.
+        Os nomes que caem na prova. Cada ficha tem um gancho para você não confundir ninguém e curiosidades que viram pista no Quem sou eu?
       </p>
 
       <div className="space-y-3">
@@ -37,6 +37,16 @@ function Fichas() {
                 <span className="font-semibold text-barro">Para lembrar: </span>
                 {p.gancho}
               </p>
+              <div>
+                <h2 className="mb-1.5 text-sm font-semibold tracking-wide text-tinta-2 uppercase [font-family:var(--font-sans)]">
+                  Curiosidades
+                </h2>
+                <ul className="list-disc space-y-1.5 pl-5 marker:text-barro">
+                  {p.curiosidades.map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+              </div>
               <ul className="flex flex-wrap gap-1.5">
                 {p.palavras.map((palavra) => (
                   <li key={palavra} className="rounded-full bg-papel-2 px-2.5 py-1 text-xs font-semibold">

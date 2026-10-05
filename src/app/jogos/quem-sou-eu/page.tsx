@@ -8,8 +8,17 @@ import { Resultado } from "@/components/Sessao";
 import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
 import { embaralhar, vibrar } from "@/lib/jogo";
+import type { Personagem } from "@/lib/tipos";
 
 const RODADAS = 5;
+const PISTAS = 4;
+
+/** Duas pistas difíceis sorteadas (curiosidades incluídas) e as duas mais fáceis, fixas: cada partida é diferente. */
+function pistasDe(p: Personagem): string[] {
+  const faceis = p.pistas.slice(-2);
+  const dificeis = embaralhar([...p.curiosidades, ...p.pistas.slice(0, -2)]).slice(0, PISTAS - faceis.length);
+  return [...dificeis, ...faceis];
+}
 
 function sortear() {
   const todos = disciplina.personagens;
@@ -17,6 +26,7 @@ function sortear() {
     .slice(0, RODADAS)
     .map((p) => ({
       p,
+      dicas: pistasDe(p),
       opcoes: embaralhar([p, ...embaralhar(todos.filter((x) => x.id !== p.id)).slice(0, 3)]),
     }));
 }
@@ -30,8 +40,8 @@ function QuemSouEu() {
   const [pontos, setPontos] = useState(0);
   const [fim, setFim] = useState(false);
 
-  const { p, opcoes } = rodadas[indice];
-  const vale = (p.pistas.length - pistas + 1) * 10;
+  const { p, dicas, opcoes } = rodadas[indice];
+  const vale = (dicas.length - pistas + 1) * 10;
   const respondida = escolha !== null;
   const acertou = escolha === p.id;
 
@@ -68,7 +78,7 @@ function QuemSouEu() {
       <Resultado
         titulo="Fim de jogo"
         destaque={`${pontos} pts`}
-        detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${RODADAS * 40}`}
+        detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${RODADAS * PISTAS * 10}`}
         acoes={
           <>
             <Botao onClick={reiniciar}>Jogar de novo</Botao>
@@ -99,7 +109,7 @@ function QuemSouEu() {
       <div key={p.id} className="animate-subir flex flex-1 flex-col">
         <h1 className="mb-4 text-2xl font-semibold">Quem sou eu?</h1>
         <ol className="mb-4 space-y-2">
-          {p.pistas.slice(0, respondida ? p.pistas.length : pistas).map((pista, i) => (
+          {dicas.slice(0, respondida ? dicas.length : pistas).map((pista, i) => (
             <li key={pista} className="animate-subir flex gap-3 rounded-2xl border border-linha bg-cartao p-3.5 text-[15px] leading-snug">
               <span className="font-titulo font-semibold text-barro">{i + 1}</span>
               {pista}
@@ -107,7 +117,7 @@ function QuemSouEu() {
           ))}
         </ol>
 
-        {!respondida && pistas < p.pistas.length && (
+        {!respondida && pistas < dicas.length && (
           <button
             onClick={() => setPistas(pistas + 1)}
             className="mb-5 self-start text-sm font-semibold text-musgo underline underline-offset-4"

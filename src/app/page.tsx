@@ -48,7 +48,9 @@ function Trilha() {
             {disciplina.temas
               .filter((t) => t.grupo === grupo)
               .map((tema) => {
-                const feitas = questoesDe(tema.id).filter((q) => progresso.questoes[q.id]).length;
+                const doTema = questoesDe(tema.id);
+                const feitas = doTema.filter((q) => progresso.questoes[q.id]).length;
+                const novas = doTema.length - feitas;
                 return (
                   <li key={tema.id}>
                     <Link
@@ -61,15 +63,17 @@ function Trilha() {
                           <p className="text-sm text-tinta-2">{tema.periodo}</p>
                         </div>
                         <div className="flex shrink-0 gap-0.5 pt-1">
-                          {NIVEIS.map((n) => (
+                          {NIVEIS.filter((n) => doTema.some((q) => q.nivel === n.id)).map((n) => (
                             <span key={n.id} className={progresso.licoes[`${tema.id}:${n.id}`] ? "text-ouro" : "text-linha"}>
-                              <Icone nome="estrela" className="size-5" cheio />
+                              <Icone nome="estrela" className="size-4" cheio />
                             </span>
                           ))}
                         </div>
                       </div>
                       <p className="mt-2 text-sm font-semibold text-musgo">
-                        {feitas === 0 ? "Começar" : `${feitas} ${feitas === 1 ? "questão feita" : "questões feitas"}`}
+                        {feitas === 0
+                          ? "Começar"
+                          : `${feitas} de ${doTema.length} feitas${novas > 0 ? ` · ${novas} ${novas === 1 ? "nova" : "novas"} para você` : ""}`}
                       </p>
                     </Link>
                   </li>

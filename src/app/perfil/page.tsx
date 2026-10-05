@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
+import { Botao, Casca, estiloBotaoLink, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
 import { useApp } from "@/lib/app";
 import { nivelDoXp, sequenciaAtiva } from "@/lib/jogo";
@@ -15,10 +15,13 @@ const CONQUISTAS: { nome: string; descricao: string; feita: (p: Progresso) => bo
   { nome: "Meio caminho", descricao: "Acerte 50 questões diferentes", feita: (p) => acertadas(p) >= 50 },
   { nome: "Centena", descricao: "Acerte 100 questões diferentes", feita: (p) => acertadas(p) >= 100 },
   { nome: "Sem medo do difícil", descricao: "Conclua uma fase difícil", feita: (p) => Object.keys(p.licoes).some((k) => k.endsWith(":dificil")) },
+  { nome: "Desafiante", descricao: "Conclua uma fase Desafio", feita: (p) => Object.keys(p.licoes).some((k) => k.endsWith(":desafio")) },
   { nome: "Nota máxima", descricao: "Tire 3 estrelas em uma fase", feita: (p) => Object.values(p.licoes).includes(3) },
   { nome: "Constelação", descricao: "Junte 30 estrelas", feita: (p) => estrelasTotais(p) >= 30 },
   { nome: "Raio", descricao: "Faça 150 pontos no Relâmpago", feita: (p) => (p.recordes.relampago ?? 0) >= 150 },
   { nome: "Detetive", descricao: "Faça 160 pontos no Quem sou eu?", feita: (p) => (p.recordes["quem-sou-eu"] ?? 0) >= 160 },
+  { nome: "Faro fino", descricao: "Faça 100 pontos em O intruso", feita: (p) => (p.recordes.intruso ?? 0) >= 100 },
+  { nome: "Elo por elo", descricao: "Faça 170 pontos em Causa e consequência", feita: (p) => (p.recordes.cadeia ?? 0) >= 170 },
 ];
 
 function Perfil() {
@@ -70,8 +73,11 @@ function Perfil() {
       </ul>
 
       <div className="space-y-3">
-        <Link href="/ranking" className={estiloLinkSuave}>
-          Ver ranking
+        <Link href="/resumo" className={estiloBotaoLink}>
+          Resumo em PDF do meu ponto fraco
+        </Link>
+        <Link href="/carta" className={estiloLinkSuave}>
+          Meu card para compartilhar
         </Link>
         <Botao variante="suave" onClick={sair}>
           Sair da conta

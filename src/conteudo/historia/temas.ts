@@ -10,6 +10,7 @@ export const temas: Tema[] = [
     grupo: BRASIL,
     titulo: "Governo Dutra",
     periodo: "1946–1951",
+    carta: { titulo: "Guardião da Carta de 46", golpe: "Canetada constitucional" },
     resumo:
       "O primeiro governo depois do Estado Novo: uma democracia nova no papel, alinhada aos Estados Unidos e com pouca tolerância aos comunistas e aos sindicatos.",
     guia: [
@@ -36,6 +37,7 @@ export const temas: Tema[] = [
     grupo: BRASIL,
     titulo: "Vargas, populismo e a oposição",
     periodo: "1951–1954",
+    carta: { titulo: "Herdeiro do Petróleo", golpe: "O petróleo é nosso" },
     resumo:
       "Vargas volta eleito pelo voto, cria a Petrobras e enfrenta a UDN de Carlos Lacerda numa disputa sobre o rumo da economia que termina com o suicídio de 1954.",
     guia: [
@@ -62,6 +64,7 @@ export const temas: Tema[] = [
     grupo: BRASIL,
     titulo: "Governo JK",
     periodo: "1956–1961",
+    carta: { titulo: "Mestre de Obras de Brasília", golpe: "50 anos em 5" },
     resumo: "\"Cinquenta anos em cinco\": Plano de Metas, indústria de automóveis, Brasília e uma conta alta de inflação e dívida.",
     guia: [
       {
@@ -77,6 +80,7 @@ export const temas: Tema[] = [
     grupo: BRASIL,
     titulo: "Jânio e a Legalidade",
     periodo: "1961",
+    carta: { titulo: "Dono da Vassoura", golpe: "Varre, vassourinha" },
     resumo: "Sete meses de governo, uma renúncia mal explicada e um país à beira da guerra civil até a saída parlamentarista.",
     guia: [
       {
@@ -92,6 +96,7 @@ export const temas: Tema[] = [
     grupo: BRASIL,
     titulo: "Governo Jango e o golpe de 1964",
     periodo: "1961–1964",
+    carta: { titulo: "Voz das Reformas", golpe: "Reforma na lei ou na marra" },
     resumo: "Reformas de Base, radicalização política à esquerda e à direita e a derrubada do presidente pelos militares.",
     guia: [
       {
@@ -107,6 +112,7 @@ export const temas: Tema[] = [
     grupo: MUNDO,
     titulo: "Guerra Fria e mundo bipolar",
     periodo: "1947–1991",
+    carta: { titulo: "Agente Duplo", golpe: "Cortina de ferro" },
     resumo: "Duas superpotências, dois sistemas e uma disputa travada com planos econômicos, alianças militares e guerras por procuração.",
     guia: [
       {
@@ -137,6 +143,7 @@ export const temas: Tema[] = [
     grupo: MUNDO,
     titulo: "Guerra do Vietnã",
     periodo: "1955–1975",
+    carta: { titulo: "Lenda da Selva", golpe: "Emboscada na trilha" },
     resumo: "Da derrota francesa em Dien Bien Phu à queda de Saigon: como a maior potência do mundo perdeu uma guerra para um país de camponeses.",
     guia: [
       {
@@ -157,6 +164,7 @@ export const temas: Tema[] = [
     grupo: MUNDO,
     titulo: "Descolonização da África e da Ásia",
     periodo: "1945–1975",
+    carta: { titulo: "Quebra-Impérios", golpe: "Ventos da mudança" },
     resumo: "O fim dos impérios coloniais europeus: da não violência na Índia à guerra na Argélia e ao apartheid na África do Sul.",
     guia: [
       {
@@ -172,6 +180,7 @@ export const temas: Tema[] = [
     grupo: MUNDO,
     titulo: "Maio de 1968",
     periodo: "1968",
+    carta: { titulo: "Barricada Ambulante", golpe: "É proibido proibir" },
     resumo: "Estudantes nas barricadas de Paris, dez milhões de trabalhadores em greve e uma revolução que mudou mais os costumes do que os governos.",
     guia: [
       {
@@ -187,6 +196,7 @@ export const temas: Tema[] = [
     grupo: MUNDO,
     titulo: "Quem foi quem",
     periodo: "século XX",
+    carta: { titulo: "Cara-Crachá da História", golpe: "Eu tenho um sonho" },
     resumo: "Os dez nomes que caem na prova. Veja as fichas na aba Figuras e treine até não confundir mais ninguém.",
     guia: [
       {
