@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import { Casca } from "@/components/Casca";
+import { Formulas } from "@/components/Formulas";
 import { Icone } from "@/components/Icone";
-import { disciplina, questoesDe } from "@/conteudo";
+import { questoesDe } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { NIVEIS, nivelDoXp, paraRevisar } from "@/lib/jogo";
 
 function Trilha() {
   const { usuario, progresso } = useApp();
+  const disciplina = useDisciplina();
   const { nivel, fracao, falta } = nivelDoXp(progresso.xp);
   const revisar = paraRevisar(progresso, disciplina.questoes).length;
   const grupos = [...new Set(disciplina.temas.map((t) => t.grupo))];
@@ -39,6 +42,16 @@ function Trilha() {
         )}
       </section>
 
+      {disciplina.temas.length === 0 && (
+        <div className="rounded-2xl border border-linha bg-cartao p-6 text-center">
+          <span className="mx-auto mb-3 flex size-16 items-center justify-center rounded-full bg-musgo-claro text-musgo-escuro">
+            <Icone nome={disciplina.icone} className="size-8" />
+          </span>
+          <p className="font-titulo text-xl font-semibold">{disciplina.nome} está chegando</p>
+          <p className="mt-1 text-tinta-2">Os temas e as questões desta matéria entram em breve.</p>
+        </div>
+      )}
+
       {grupos.map((grupo) => (
         <section key={grupo} className="mb-7">
           <h2 className="mb-3 text-sm font-semibold tracking-wide text-tinta-2 uppercase [font-family:var(--font-sans)]">
@@ -60,7 +73,9 @@ function Trilha() {
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <h3 className="text-lg leading-snug font-semibold">{tema.titulo}</h3>
-                          <p className="text-sm text-tinta-2">{tema.periodo}</p>
+                          <p className="text-sm text-tinta-2">
+                            <Formulas>{tema.periodo}</Formulas>
+                          </p>
                         </div>
                         <div className="flex shrink-0 gap-0.5 pt-1">
                           {NIVEIS.filter((n) => doTema.some((q) => q.nivel === n.id)).map((n) => (

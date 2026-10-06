@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { materiaDaQuestao } from "@/conteudo";
 import { dia, placarDe } from "@/lib/jogo";
 import type { Progresso } from "@/lib/tipos";
 
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
 
   const dadosDe = new Map(progressos.data.map((linha) => [linha.user_id as string, linha.dados as Partial<Progresso>]));
   const placares = perfis.data.map((perfil) =>
-    placarDe(perfil.id, perfil.usuario, dadosDe.get(perfil.id) ?? { xp: perfil.xp }, hoje),
+    placarDe(perfil.id, perfil.usuario, dadosDe.get(perfil.id) ?? { xp: perfil.xp }, materiaDaQuestao, hoje),
   );
   return Response.json({ placares });
 }

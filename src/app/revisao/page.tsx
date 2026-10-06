@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Botao, Casca, estiloBotaoLink } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
 import { type Fim, LinkInicio, Resultado, Sessao } from "@/components/Sessao";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { paraRevisar } from "@/lib/jogo";
 import type { Questao } from "@/lib/tipos";
 
@@ -14,7 +14,7 @@ const MAXIMO = 10;
 
 function Revisao({ aoFocar }: { aoFocar: (foco: boolean) => void }) {
   const { progresso } = useApp();
-  const pendentes = paraRevisar(progresso, disciplina.questoes);
+  const pendentes = paraRevisar(progresso, useDisciplina().questoes);
   const [sessao, setSessao] = useState<Questao[] | null>(null);
   const [fim, setFim] = useState<Fim | null>(null);
 

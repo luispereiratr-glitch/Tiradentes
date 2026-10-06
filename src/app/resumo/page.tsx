@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Botao, Casca, Topo } from "@/components/Casca";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { type Desempenho, desempenhoPorTema, MINIMO_DE_RESPOSTAS, pontoFraco, pontosFracos } from "@/lib/diagnostico";
 import { baixarResumo } from "@/lib/pdf";
 
 function Resumo() {
   const { usuario, progresso } = useApp();
+  const disciplina = useDisciplina();
   const todos = desempenhoPorTema(progresso, disciplina);
   const fraco = pontoFraco(todos);
   const fracos = pontosFracos(todos);
@@ -26,6 +27,7 @@ function Resumo() {
     try {
       await baixarResumo({
         nome: usuario!.nome,
+        textos: disciplina.textos.resumo,
         todos,
         capitulos: alvos.map((d) => ({
           alvo: d,
@@ -49,7 +51,7 @@ function Resumo() {
             <p className="text-xs font-semibold tracking-wide text-barro uppercase">Seu ponto mais fraco</p>
             <p className="mt-1 font-titulo text-2xl leading-tight font-semibold">{fraco.tema.titulo}</p>
             <p className="mt-1 text-[15px] leading-relaxed">
-              {fraco.taxa}% de acerto em {fraco.respostas} respostas. O PDF junta o essencial desse tema, as datas, os conceitos e as questões
+              {fraco.taxa}% de acerto em {fraco.respostas} respostas. O PDF junta o essencial desse tema, {disciplina.textos.resumo.itens}, os conceitos e as questões
               que você errou.
             </p>
             {fracos.length > 1 && (

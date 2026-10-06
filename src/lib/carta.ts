@@ -1,5 +1,6 @@
 import { doMaisFracoAoMaisForte, type Desempenho } from "./diagnostico";
 import { nivelDoXp } from "./jogo";
+import { coresDoTema } from "./tema";
 import type { Placar } from "./tipos";
 
 export type Carta = {
@@ -57,19 +58,6 @@ export function montarCarta(eu: Placar, materia: string, desempenho: Desempenho[
 export const LARGURA = 1080;
 export const ALTURA = 1500;
 
-const COR = {
-  papel: "#f6f1e7",
-  papel2: "#ede6d6",
-  linha: "#ddd4c0",
-  tinta: "#1f2a24",
-  tinta2: "#5b665e",
-  musgo: "#2f5d46",
-  musgoEscuro: "#21432f",
-  barro: "#c4623a",
-  barroClaro: "#f6dfd3",
-  ouro: "#d09a2f",
-};
-
 function retangulo(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -80,8 +68,9 @@ function retangulo(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.closePath();
 }
 
-/** Desenha o card no canvas (1080 × 1500), com as fontes do próprio app. */
+/** Desenha o card no canvas (1080 × 1500), com as fontes e as cores da matéria ativa. */
 export async function desenharCarta(canvas: HTMLCanvasElement, c: Carta) {
+  const COR = coresDoTema();
   const raiz = getComputedStyle(document.documentElement);
   const serifa = `${raiz.getPropertyValue("--fonte-titulo").trim() || "Georgia"}, Georgia, serif`;
   const sans = `${raiz.getPropertyValue("--fonte-corpo").trim() || "system-ui"}, system-ui, sans-serif`;

@@ -8,8 +8,10 @@
   reset feito manualmente por você (admin).
 - **Sem tutor de IA** (decisão de custo): cada questão traz explicação detalhada e gancho de memória.
 
-## Multi-matéria (futuro)
-Tudo é organizado por `disciplina > tema > questão`. Trocar de História para outra área = só inserir dados novos.
+## Multi-matéria
+Tudo é organizado por `disciplina > tema > questão`. A matéria ativa é escolhida no cabeçalho e muda o conteúdo,
+os nomes dos jogos e das fichas (`textos` de cada disciplina) e a paleta. XP, nível e sequência são únicos por pessoa;
+recordes dos jogos são por matéria. Matérias: História e Física (magnetismo).
 
 ## Conteúdo inicial (História)
 Temas:

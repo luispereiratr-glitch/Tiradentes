@@ -1,5 +1,5 @@
 import type { Evento, Personagem, Questao } from "@/lib/tipos";
-import { criar } from "./criar";
+import { criar } from "../criar";
 
 export const personagens: Personagem[] = [
   {

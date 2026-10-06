@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { materiaDaQuestao } from "@/conteudo";
 import { useApp } from "./app";
 import { dia, placarDe } from "./jogo";
 import { supabase } from "./supabase";
-import type { Placar } from "./tipos";
+import type { Placar, PlacarMateria } from "./tipos";
 
 /** Placar de todo mundo, com a linha de quem está logado sempre em primeiro. `placares` é `null` enquanto carrega. */
 export function useRanking(): { eu: Placar; placares: Placar[] | null; erro: boolean } {
@@ -31,10 +32,16 @@ export function useRanking(): { eu: Placar; placares: Placar[] | null; erro: boo
   }, []);
 
   // A própria linha sai sempre do progresso em memória: o que acabou de ser feito já aparece.
-  const eu = placarDe(usuario!.id, usuario!.nome, progresso);
+  const eu = placarDe(usuario!.id, usuario!.nome, progresso, materiaDaQuestao);
   const placares = modoLocal ? [eu] : remotos && [eu, ...remotos.filter((p) => p.id !== eu.id)];
   return { eu, placares, erro };
 }
 
-/** Posição (a partir de 1) no ranking geral, por XP. */
-export const posicaoGeral = (eu: Placar, placares: Placar[]) => placares.filter((p) => p.xp > eu.xp).length + 1;
+const SEM_NADA: PlacarMateria = { xp: 0, xpSemana: 0, acertadas: 0, precisao: null };
+
+/** Os números de uma pessoa em uma matéria; zerados se ela nunca a estudou. */
+export const naMateria = (p: Placar, materia: string) => p.materias[materia] ?? SEM_NADA;
+
+/** Posição (a partir de 1) no ranking de uma matéria, por XP. */
+export const posicaoNaMateria = (eu: Placar, placares: Placar[], materia: string) =>
+  placares.filter((p) => naMateria(p, materia).xp > naMateria(eu, materia).xp).length + 1;

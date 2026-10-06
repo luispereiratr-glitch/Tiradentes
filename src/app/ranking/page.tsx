@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Casca } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
 import { useApp } from "@/lib/app";
-import { nivelDoXp } from "@/lib/jogo";
-import { JOGOS } from "@/lib/jogos";
-import { useRanking } from "@/lib/ranking";
+import { useDisciplina } from "@/lib/disciplina";
+import { jogosDe } from "@/lib/jogos";
+import { naMateria, useRanking } from "@/lib/ranking";
 import type { Placar } from "@/lib/tipos";
 
 type Aba = "geral" | "semana" | "questoes" | "jogos";
@@ -19,7 +19,7 @@ const ABAS: { id: Aba; nome: string }[] = [
 ];
 
 const TODOS = "todos";
-const somaDosJogos = (p: Placar) => JOGOS.reduce((s, j) => s + (p.recordes[j.id] ?? 0), 0);
+type Jogos = ReturnType<typeof jogosDe>;
 
 type Criterio = {
   descricao: string;
@@ -31,52 +31,58 @@ type Criterio = {
   soPontuados?: boolean;
 };
 
-function criterioDe(aba: Aba, jogo: string): Criterio {
+function criterioDe(aba: Aba, jogo: string, jogos: Jogos, materia: { id: string; nome: string }): Criterio {
+  const m = (p: Placar) => naMateria(p, materia.id);
+  const somaDosJogos = (p: Placar) => jogos.reduce((s, j) => s + (p.recordes[j.recorde] ?? 0), 0);
+
   if (aba === "geral") {
     return {
-      descricao: "Pontuação geral: todo o XP ganho em questões, fases e jogos desde o primeiro dia.",
-      vazio: "Ainda não há ninguém no ranking.",
-      pontos: (p) => p.xp,
-      valor: (p) => `${p.xp} XP`,
-      detalhe: (p) => `Nível ${nivelDoXp(p.xp).nivel} · ${p.acertadas} ${p.acertadas === 1 ? "questão" : "questões"}`,
+      descricao: `Todo o XP ganho em ${materia.nome}, em questões, fases e jogos, desde o primeiro dia.`,
+      vazio: `Ninguém pontuou em ${materia.nome} ainda. O primeiro lugar está vago.`,
+      pontos: (p) => m(p).xp,
+      valor: (p) => `${m(p).xp} XP`,
+      detalhe: (p) => `${m(p).acertadas} ${m(p).acertadas === 1 ? "questão acertada" : "questões acertadas"}`,
+      soPontuados: true,
     };
   }
   if (aba === "semana") {
     return {
-      descricao: "XP ganho desde domingo. Zera toda semana, então todo mundo larga junto.",
+      descricao: `XP ganho em ${materia.nome} desde domingo. Zera toda semana, então todo mundo larga junto.`,
       vazio: "Ninguém pontuou nesta semana ainda. O primeiro lugar está vago.",
-      pontos: (p) => p.xpSemana,
-      valor: (p) => `${p.xpSemana} XP`,
+      pontos: (p) => m(p).xpSemana,
+      valor: (p) => `${m(p).xpSemana} XP`,
       soPontuados: true,
     };
   }
   if (aba === "questoes") {
     return {
-      descricao: "Questões diferentes acertadas. Repetir a mesma questão não soma de novo.",
-      vazio: "Ainda não há ninguém no ranking.",
-      pontos: (p) => p.acertadas,
-      valor: (p) => `${p.acertadas} ${p.acertadas === 1 ? "acertada" : "acertadas"}`,
-      detalhe: (p) => (p.precisao === null ? null : `${p.precisao}% de acerto`),
+      descricao: `Questões diferentes de ${materia.nome} acertadas. Repetir a mesma questão não soma de novo.`,
+      vazio: `Ninguém acertou questões de ${materia.nome} ainda.`,
+      pontos: (p) => m(p).acertadas,
+      valor: (p) => `${m(p).acertadas} ${m(p).acertadas === 1 ? "acertada" : "acertadas"}`,
+      detalhe: (p) => (m(p).precisao === null ? null : `${m(p).precisao}% de acerto`),
+      soPontuados: true,
     };
   }
   if (jogo === TODOS) {
     return {
-      descricao: "Soma dos recordes de cada pessoa em todos os jogos.",
+      descricao: `Soma dos recordes de cada pessoa em todos os jogos de ${materia.nome}.`,
       vazio: "Ninguém jogou ainda. O primeiro lugar está vago.",
       pontos: somaDosJogos,
       valor: (p) => `${somaDosJogos(p)} pts`,
       detalhe: (p) => {
-        const jogados = JOGOS.filter((j) => p.recordes[j.id]).length;
-        return `${jogados} de ${JOGOS.length} jogos`;
+        const jogados = jogos.filter((j) => p.recordes[j.recorde]).length;
+        return `${jogados} de ${jogos.length} jogos`;
       },
       soPontuados: true,
     };
   }
+  const chave = jogos.find((j) => j.id === jogo)!.recorde;
   return {
     descricao: "O melhor resultado de cada pessoa em uma única partida.",
     vazio: "Ninguém jogou este jogo ainda. O recorde é de quem chegar primeiro.",
-    pontos: (p) => p.recordes[jogo] ?? 0,
-    valor: (p) => `${p.recordes[jogo] ?? 0} pts`,
+    pontos: (p) => p.recordes[chave] ?? 0,
+    valor: (p) => `${p.recordes[chave] ?? 0} pts`,
     soPontuados: true,
   };
 }
@@ -115,26 +121,28 @@ function Podio({ tres, euId, valor }: { tres: Placar[]; euId: string; valor: (p:
 
 function Ranking() {
   const { modoLocal } = useApp();
+  const disciplina = useDisciplina();
+  const jogos = jogosDe(disciplina);
   const { eu, placares, erro } = useRanking();
   const [aba, setAba] = useState<Aba>("geral");
   const [jogo, setJogo] = useState(TODOS);
 
-  const criterio = criterioDe(aba, jogo);
+  const criterio = criterioDe(aba, jogo, jogos, disciplina);
   const lista = (placares ?? [])
     .filter((p) => !criterio.soPontuados || criterio.pontos(p) > 0)
-    .sort((a, b) => criterio.pontos(b) - criterio.pontos(a) || b.xp - a.xp || a.usuario.localeCompare(b.usuario));
+    .sort((a, b) => criterio.pontos(b) - criterio.pontos(a) || naMateria(b, disciplina.id).xp - naMateria(a, disciplina.id).xp || a.usuario.localeCompare(b.usuario));
   const minhaPosicao = lista.findIndex((p) => p.id === eu.id) + 1;
   const comPodio = lista.length >= 3;
 
   return (
     <>
-      <h1 className="mb-1 text-[28px] font-semibold">Ranking</h1>
+      <h1 className="mb-1 text-[28px] font-semibold">Ranking de {disciplina.nome}</h1>
       <p className="mb-4 text-tinta-2">
         {!placares
           ? "Quem está estudando mais na turma."
           : minhaPosicao
             ? `Você está em ${minhaPosicao}º de ${lista.length}.`
-            : "Você ainda não pontuou aqui."}
+            : `Você ainda não pontuou aqui. Cada matéria tem o seu ranking.`}
       </p>
 
       <div className="mb-3 grid grid-cols-4 gap-1 rounded-2xl bg-papel-2 p-1" role="tablist">
@@ -153,7 +161,7 @@ function Ranking() {
 
       {aba === "jogos" && (
         <div className="-mx-5 mb-3 flex gap-2 overflow-x-auto px-5 pb-1">
-          {[{ id: TODOS, nome: "Todos", icone: "trofeu" as const }, ...JOGOS].map((j) => (
+          {[{ id: TODOS, nome: "Todos", icone: "trofeu" as const }, ...jogos].map((j) => (
             <button
               key={j.id}
               aria-pressed={jogo === j.id}

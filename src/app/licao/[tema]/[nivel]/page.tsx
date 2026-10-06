@@ -5,7 +5,7 @@ import { notFound, useParams } from "next/navigation";
 import { useState } from "react";
 import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
 import { type Fim, Resultado, Sessao } from "@/components/Sessao";
-import { disciplina, questoesDe } from "@/conteudo";
+import { questoesDe, temaDe } from "@/conteudo";
 import { useApp } from "@/lib/app";
 import { embaralhar, estrelas, NIVEIS } from "@/lib/jogo";
 
@@ -15,7 +15,7 @@ const POR_SESSAO = 8;
 function Licao() {
   const { tema: temaId, nivel } = useParams<{ tema: string; nivel: string }>();
   const { progresso, concluirLicao, ganharXp } = useApp();
-  const tema = disciplina.temas.find((t) => t.id === temaId);
+  const tema = temaDe(temaId);
   const dadosNivel = NIVEIS.find((n) => n.id === nivel);
 
   const ineditas = () => questoesDe(temaId, nivel).filter((q) => !progresso.questoes[q.id]);
@@ -37,7 +37,7 @@ function Licao() {
     const nota = estrelas(resultado.acertos, resultado.total);
     if (nota > 0) {
       concluirLicao(`${tema!.id}:${nivel}`, nota);
-      ganharXp(BONUS);
+      ganharXp(BONUS, tema!.disciplina);
     }
     setFim(resultado);
   }

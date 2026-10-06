@@ -1,13 +1,9 @@
 import type { Desempenho } from "./diagnostico";
-import type { Resumo } from "./tipos";
+import { coresDoTema } from "./tema";
+import type { Questao, Resumo, Textos } from "./tipos";
 
 type Cor = [number, number, number];
-const TINTA: Cor = [31, 42, 36];
-const TINTA_2: Cor = [91, 102, 94];
-const MUSGO: Cor = [47, 93, 70];
-const BARRO: Cor = [196, 98, 58];
-const LINHA: Cor = [221, 212, 192];
-const FUNDO: Cor = [246, 241, 231];
+const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)) as Cor;
 
 const TROCAS: [RegExp, string][] = [
   [/[“”]/g, '"'],
@@ -15,12 +11,28 @@ const TROCAS: [RegExp, string][] = [
   [/[–—]/g, "-"],
   [/…/g, "..."],
   [/→/g, "->"],
+  [/≈/g, "~"],
+  [/≤/g, "<="],
+  [/≥/g, ">="],
+  [/√/g, "raiz de "],
+  [/π/g, "pi"],
+  [/θ/g, "theta"],
+  [/α/g, "alfa"],
+  [/ω/g, "omega"],
+  [/λ/g, "lambda"],
+  [/ℓ/g, "l"],
 ];
+
+const EXPOENTES = "⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺";
+const INDICES = "₀₁₂₃₄₅₆₇₈₉";
 
 /** As fontes padrão do PDF só cobrem o alfabeto latino básico: troca o resto por equivalentes. */
 function limpar(texto: string): string {
   let t = texto;
   for (const [de, para] of TROCAS) t = t.replace(de, para);
+  // Fórmulas: 10⁻⁷ vira 10^-7 e µ₀ vira µ0.
+  t = t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]+/g, (trecho) => `^${[...trecho].map((c) => "0123456789-+"[EXPOENTES.indexOf(c)]).join("")}`);
+  t = t.replace(/[₀-₉]/g, (c) => String(INDICES.indexOf(c)));
   return [...t].map((c) => (c.charCodeAt(0) <= 255 ? c : c.normalize("NFD").replace(/[^\x00-\xff]/g, "") || "?")).join("");
 }
 
@@ -33,14 +45,36 @@ function encurtar(texto: string, max: number): string {
   return limpo.length <= max ? limpo : `${limpo.slice(0, limpo.lastIndexOf(" ", max))}...`;
 }
 
+/** Lê uma figura do site para dentro do PDF. `null` se não der (sem conexão, por exemplo): o resumo sai sem ela. */
+async function carregarFigura(src: string): Promise<string | null> {
+  try {
+    const arquivo = await (await fetch(src)).blob();
+    return await new Promise((resolver) => {
+      const leitor = new FileReader();
+      leitor.onload = () => resolver(leitor.result as string);
+      leitor.onerror = () => resolver(null);
+      leitor.readAsDataURL(arquivo);
+    });
+  } catch {
+    return null;
+  }
+}
+
 export type Capitulo = { alvo: Desempenho; resumo: Resumo; /** O tema foi apontado pelo diagnóstico, e não escolhido à mão. */ sugerido: boolean };
 
 /**
  * Monta e baixa o resumo de um ou mais temas, com o diagnóstico da pessoa e as questões que ela errou.
  * Um tema só sai completo; vários saem em síntese, direto ao que a pessoa errou em cada um.
  */
-export async function baixarResumo(dados: { nome: string; capitulos: Capitulo[]; todos: Desempenho[] }) {
+export async function baixarResumo(dados: { nome: string; textos: Textos["resumo"]; capitulos: Capitulo[]; todos: Desempenho[] }) {
   const { jsPDF } = await import("jspdf");
+  const cores = coresDoTema();
+  const TINTA = rgb(cores.tinta);
+  const TINTA_2 = rgb(cores.tinta2);
+  const MUSGO = rgb(cores.musgo);
+  const BARRO = rgb(cores.barro);
+  const LINHA = rgb(cores.linha);
+  const FUNDO = rgb(cores.papel);
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const LARGURA = doc.internal.pageSize.getWidth();
   const ALTURA = doc.internal.pageSize.getHeight();
@@ -103,7 +137,21 @@ export async function baixarResumo(dados: { nome: string; capitulos: Capitulo[];
     y = Math.max(y, topo + linhasRotulo.length * entrelinha) + 5;
   }
 
-  const { capitulos, todos } = dados;
+  const { capitulos, todos, textos: nomes } = dados;
+
+  // As figuras são baixadas antes, porque o resto da montagem do PDF não espera por nada.
+  const comFigura = capitulos.flatMap((c) => c.alvo.erradas.map((e) => e.questao)).filter((q) => q.figura);
+  const figuras = new Map(await Promise.all(comFigura.map(async (q) => [q.id, await carregarFigura(q.figura!.src)] as const)));
+
+  function figura(q: Questao) {
+    const imagem = figuras.get(q.id);
+    if (!q.figura || !imagem) return;
+    const largura = Math.min(util * 0.6, (q.figura.largura * 150) / q.figura.altura);
+    const altura = (largura * q.figura.altura) / q.figura.largura;
+    reservar(altura + 8);
+    doc.addImage(imagem, "PNG", MARGEM, y, largura, altura);
+    y += altura + 8;
+  }
   const varios = capitulos.length > 1;
   const hoje = new Date().toLocaleDateString("pt-BR");
 
@@ -159,6 +207,7 @@ export async function baixarResumo(dados: { nome: string; capitulos: Capitulo[];
       for (const { questao: q, vezes } of alvo.erradas.slice(0, MAX_NA_SINTESE)) {
         reservar(50);
         texto(`${encurtar(q.enunciado, 150)}${vezes > 1 ? ` (errou ${vezes} vezes)` : ""}`, { tam: 9.5, cor: TINTA_2, depois: 1 });
+        figura(q);
         texto(`Certo: ${q.alternativas[0]}`, { negrito: true, depois: q.lembre ? 1 : 7 });
         if (q.lembre) texto(q.lembre, { cor: MUSGO, depois: 7 });
       }
@@ -172,7 +221,7 @@ export async function baixarResumo(dados: { nome: string; capitulos: Capitulo[];
     y += 4;
 
     reservar(50);
-    rotulo("DATAS-CHAVE");
+    rotulo(nomes.datasCurto);
     texto(resumo.datas.map(([quando, oque]) => `${quando}: ${oque}`).join("  ·  "), { tam: 9.5, depois: 4 });
   }
 
@@ -206,7 +255,7 @@ export async function baixarResumo(dados: { nome: string; capitulos: Capitulo[];
   secao("O essencial");
   for (const paragrafo of resumo.essencial) texto(paragrafo, { depois: 8 });
 
-  secao("Linha do tempo");
+  secao(nomes.datas);
   for (const [quando, oque] of resumo.datas) item(quando, oque, 104);
 
   secao("Conceitos que a prova cobra");
@@ -232,6 +281,7 @@ export async function baixarResumo(dados: { nome: string; capitulos: Capitulo[];
     alvo.erradas.slice(0, MAX_ERRADAS).forEach(({ questao: q }, i) => {
       reservar(70);
       texto(`${i + 1}. ${q.enunciado}`, { negrito: true, depois: 3 });
+      figura(q);
       texto(`Resposta certa: ${q.alternativas[0]}`, { cor: MUSGO, depois: 3 });
       texto(q.explicacao, { depois: q.lembre ? 3 : 10 });
       if (q.lembre) texto(`Para lembrar: ${q.lembre}`, { cor: BARRO, depois: 10 });
@@ -246,7 +296,7 @@ export async function baixarResumo(dados: { nome: string; capitulos: Capitulo[];
     texto("Meus pontos fracos", { tam: 26, negrito: true, fonte: "times", depois: 0 });
     texto(`Preparado para ${dados.nome} em ${hoje}`, { cor: TINTA_2, depois: 12 });
     texto(
-      `Direto ao ponto: os ${capitulos.length} temas em que você mais erra, com o que você errou em cada um, o que não confundir e as datas-chave.`,
+      `Direto ao ponto: os ${capitulos.length} temas em que você mais erra, com o que você errou em cada um, o que não confundir e as ${nomes.datasCurto.toLowerCase()}.`,
       { depois: 10 },
     );
     capitulos.forEach((c, i) =>

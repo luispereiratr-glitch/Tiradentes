@@ -4,7 +4,9 @@ import Link from "next/link";
 import { Botao, Casca, estiloBotaoLink, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { nivelDoXp, sequenciaAtiva } from "@/lib/jogo";
+import { jogosDe } from "@/lib/jogos";
 import type { Progresso } from "@/lib/tipos";
 
 const acertadas = (p: Progresso) => Object.values(p.questoes).filter((r) => r.a > 0).length;
@@ -18,14 +20,16 @@ const CONQUISTAS: { nome: string; descricao: string; feita: (p: Progresso) => bo
   { nome: "Desafiante", descricao: "Conclua uma fase Desafio", feita: (p) => Object.keys(p.licoes).some((k) => k.endsWith(":desafio")) },
   { nome: "Nota máxima", descricao: "Tire 3 estrelas em uma fase", feita: (p) => Object.values(p.licoes).includes(3) },
   { nome: "Constelação", descricao: "Junte 30 estrelas", feita: (p) => estrelasTotais(p) >= 30 },
-  { nome: "Raio", descricao: "Faça 150 pontos no Relâmpago", feita: (p) => (p.recordes.relampago ?? 0) >= 150 },
-  { nome: "Detetive", descricao: "Faça 160 pontos no Quem sou eu?", feita: (p) => (p.recordes["quem-sou-eu"] ?? 0) >= 160 },
-  { nome: "Faro fino", descricao: "Faça 100 pontos em O intruso", feita: (p) => (p.recordes.intruso ?? 0) >= 100 },
-  { nome: "Elo por elo", descricao: "Faça 170 pontos em Causa e consequência", feita: (p) => (p.recordes.cadeia ?? 0) >= 170 },
 ];
 
 function Perfil() {
   const { usuario, progresso, sair, modoLocal } = useApp();
+  // Cada matéria traz as conquistas dos seus próprios jogos.
+  const dosJogos = jogosDe(useDisciplina()).flatMap((j) =>
+    j.conquista
+      ? [{ nome: j.conquista.nome, descricao: `Faça ${j.conquista.pontos} pontos em ${j.nome}`, feita: (p: Progresso) => (p.recordes[j.recorde] ?? 0) >= j.conquista!.pontos }]
+      : [],
+  );
   const { nivel } = nivelDoXp(progresso.xp);
   const registros = Object.values(progresso.questoes);
   const tentativas = registros.reduce((s, r) => s + r.a + r.e, 0);
@@ -56,7 +60,7 @@ function Perfil() {
 
       <h2 className="mb-3 text-lg font-semibold">Conquistas</h2>
       <ul className="mb-7 space-y-2">
-        {CONQUISTAS.map((c) => {
+        {[...CONQUISTAS, ...dosJogos].map((c) => {
           const feita = c.feita(progresso);
           return (
             <li key={c.nome} className={`flex items-center gap-3 rounded-2xl border border-linha p-3 ${feita ? "bg-cartao" : "opacity-60"}`}>

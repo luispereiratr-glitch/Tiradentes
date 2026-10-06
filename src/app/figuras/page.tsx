@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { Casca, estiloBotaoLink } from "@/components/Casca";
+import { Formulas } from "@/components/Formulas";
 import { Icone } from "@/components/Icone";
-import { disciplina } from "@/conteudo";
+import { useDisciplina } from "@/lib/disciplina";
+import { jogoDe } from "@/lib/jogos";
 
 function iniciais(nome: string) {
   const partes = nome.split(" ");
@@ -11,12 +13,17 @@ function iniciais(nome: string) {
 }
 
 function Fichas() {
+  const disciplina = useDisciplina();
+  const textos = disciplina.textos.fichas;
+  const jogo = jogoDe(disciplina, "quem-sou-eu");
   return (
     <>
-      <h1 className="mb-1 text-[28px] font-semibold">Figuras</h1>
-      <p className="mb-5 leading-relaxed text-tinta-2">
-        Os nomes que caem na prova. Cada ficha tem um gancho para você não confundir ninguém e curiosidades que viram pista no Quem sou eu?
-      </p>
+      <h1 className="mb-1 text-[28px] font-semibold">{textos.aba}</h1>
+      <p className="mb-5 leading-relaxed text-tinta-2">{textos.intro}</p>
+
+      {disciplina.personagens.length === 0 && (
+        <p className="rounded-2xl border border-linha bg-cartao p-5 leading-relaxed text-tinta-2">As fichas de {disciplina.nome} entram em breve.</p>
+      )}
 
       <div className="space-y-3">
         {disciplina.personagens.map((p) => (
@@ -27,15 +34,19 @@ function Fichas() {
               </span>
               <span className="flex-1">
                 <span className="block font-titulo text-lg leading-tight font-semibold">{p.nome}</span>
-                <span className="block text-sm text-tinta-2">{p.lugar}</span>
+                <span className="block text-sm text-tinta-2">
+                  <Formulas>{p.lugar}</Formulas>
+                </span>
               </span>
               <Icone nome="baixo" className="size-5 text-tinta-2 transition group-open:rotate-180" />
             </summary>
             <div className="space-y-3 px-4 pb-4 text-[15px] leading-relaxed">
-              <p>{p.quem}</p>
+              <p>
+                <Formulas>{p.quem}</Formulas>
+              </p>
               <p className="rounded-xl bg-barro-claro px-3 py-2.5">
                 <span className="font-semibold text-barro">Para lembrar: </span>
-                {p.gancho}
+                <Formulas>{p.gancho}</Formulas>
               </p>
               <div>
                 <h2 className="mb-1.5 text-sm font-semibold tracking-wide text-tinta-2 uppercase [font-family:var(--font-sans)]">
@@ -43,14 +54,16 @@ function Fichas() {
                 </h2>
                 <ul className="list-disc space-y-1.5 pl-5 marker:text-barro">
                   {p.curiosidades.map((c) => (
-                    <li key={c}>{c}</li>
+                    <li key={c}>
+                      <Formulas>{c}</Formulas>
+                    </li>
                   ))}
                 </ul>
               </div>
               <ul className="flex flex-wrap gap-1.5">
                 {p.palavras.map((palavra) => (
                   <li key={palavra} className="rounded-full bg-papel-2 px-2.5 py-1 text-xs font-semibold">
-                    {palavra}
+                    <Formulas>{palavra}</Formulas>
                   </li>
                 ))}
               </ul>
@@ -59,11 +72,13 @@ function Fichas() {
         ))}
       </div>
 
-      <div className="mt-6 space-y-3">
-        <Link href="/jogos/quem-sou-eu" className={estiloBotaoLink}>
-          Treinar no Quem sou eu?
-        </Link>
-      </div>
+      {jogo?.disponivel && (
+        <div className="mt-6 space-y-3">
+          <Link href="/jogos/quem-sou-eu" className={estiloBotaoLink}>
+            Treinar no {jogo.nome}
+          </Link>
+        </div>
+      )}
     </>
   );
 }

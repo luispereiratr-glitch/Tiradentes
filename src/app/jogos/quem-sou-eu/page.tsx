@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { Jogo } from "@/components/Jogo";
 import { Resultado } from "@/components/Sessao";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { embaralhar, vibrar } from "@/lib/jogo";
+import { chaveRecorde } from "@/lib/jogos";
 import type { Personagem } from "@/lib/tipos";
 
 const RODADAS = 5;
@@ -20,8 +22,7 @@ function pistasDe(p: Personagem): string[] {
   return [...dificeis, ...faceis];
 }
 
-function sortear() {
-  const todos = disciplina.personagens;
+function sortear(todos: Personagem[]) {
   return embaralhar(todos)
     .slice(0, RODADAS)
     .map((p) => ({
@@ -33,7 +34,9 @@ function sortear() {
 
 function QuemSouEu() {
   const { ganharXp, registrarRecorde } = useApp();
-  const [rodadas, setRodadas] = useState(sortear);
+  const disciplina = useDisciplina();
+  const textos = disciplina.textos.quemSouEu;
+  const [rodadas, setRodadas] = useState(() => sortear(disciplina.personagens));
   const [indice, setIndice] = useState(0);
   const [pistas, setPistas] = useState(1);
   const [escolha, setEscolha] = useState<string | null>(null);
@@ -58,14 +61,14 @@ function QuemSouEu() {
       setPistas(1);
       setEscolha(null);
     } else {
-      registrarRecorde("quem-sou-eu", pontos);
-      ganharXp(Math.round(pontos / 2));
+      registrarRecorde(chaveRecorde(disciplina.id, "quem-sou-eu"), pontos);
+      ganharXp(Math.round(pontos / 2), disciplina.id);
       setFim(true);
     }
   }
 
   function reiniciar() {
-    setRodadas(sortear());
+    setRodadas(sortear(disciplina.personagens));
     setIndice(0);
     setPistas(1);
     setEscolha(null);
@@ -78,7 +81,7 @@ function QuemSouEu() {
       <Resultado
         titulo="Fim de jogo"
         destaque={`${pontos} pts`}
-        detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${RODADAS * PISTAS * 10}`}
+        detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${rodadas.length * PISTAS * 10}`}
         acoes={
           <>
             <Botao onClick={reiniciar}>Jogar de novo</Botao>
@@ -101,13 +104,13 @@ function QuemSouEu() {
           <Icone nome="errado" />
         </Link>
         <span className="text-tinta-2">
-          Figura {indice + 1} de {rodadas.length}
+          {textos.rodada} {indice + 1} de {rodadas.length}
         </span>
         <span className="text-musgo tabular-nums">{pontos} pts</span>
       </div>
 
       <div key={p.id} className="animate-subir flex flex-1 flex-col">
-        <h1 className="mb-4 text-2xl font-semibold">Quem sou eu?</h1>
+        <h1 className="mb-4 text-2xl font-semibold">{disciplina.textos.jogos["quem-sou-eu"]!.nome}</h1>
         <ol className="mb-4 space-y-2">
           {dicas.slice(0, respondida ? dicas.length : pistas).map((pista, i) => (
             <li key={pista} className="animate-subir flex gap-3 rounded-2xl border border-linha bg-cartao p-3.5 text-[15px] leading-snug">
@@ -161,7 +164,7 @@ function QuemSouEu() {
 
       {respondida && (
         <div className="mt-5 pb-2">
-          <Botao onClick={continuar}>{indice + 1 < rodadas.length ? "Próxima figura" : "Ver resultado"}</Botao>
+          <Botao onClick={continuar}>{indice + 1 < rodadas.length ? textos.proxima : "Ver resultado"}</Botao>
         </div>
       )}
     </div>
@@ -171,7 +174,9 @@ function QuemSouEu() {
 export default function PaginaQuemSouEu() {
   return (
     <Casca foco>
-      <QuemSouEu />
+      <Jogo id="quem-sou-eu">
+        <QuemSouEu />
+      </Jogo>
     </Casca>
   );
 }

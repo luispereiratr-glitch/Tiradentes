@@ -1,4 +1,4 @@
-import type { Nivel, Placar, Progresso, Questao } from "./tipos";
+import type { Nivel, Placar, Progresso, Questao, RegistroQuestao } from "./tipos";
 
 export const NIVEIS: { id: Nivel; nome: string; xp: number }[] = [
   { id: "facil", nome: "Fácil", xp: 10 },
@@ -14,7 +14,14 @@ export const VAZIO: Progresso = {
   licoes: {},
   recordes: {},
   semana: { inicio: "", xp: 0 },
+  materias: {},
 };
+
+/** Completa um progresso salvo. Antes de haver matérias, todo o XP era de História. */
+export function completar(dados: Partial<Progresso>): Progresso {
+  const p = { ...VAZIO, ...dados };
+  return dados.materias || !p.xp ? p : { ...p, materias: { historia: { xp: p.xp, semana: p.semana } } };
+}
 
 /** Dias até a próxima revisão, por caixa (repetição espaçada). */
 const INTERVALOS = [0, 1, 3, 7, 14];
@@ -57,13 +64,21 @@ export function inicioDaSemana(hoje = dia()): string {
   return dia(-new Date(`${hoje}T12:00:00`).getDay(), hoje);
 }
 
-export function somarXp(p: Progresso, xp: number): Progresso {
+/** Soma XP ao total da pessoa e ao da matéria em que ele foi ganho. */
+export function somarXp(p: Progresso, xp: number, materia: string): Progresso {
   const inicio = inicioDaSemana();
-  const naSemana = p.semana.inicio === inicio ? p.semana.xp : 0;
-  return { ...p, xp: p.xp + xp, dias: marcarDia(p), semana: { inicio, xp: naSemana + xp } };
+  const naSemana = (s: Progresso["semana"]) => ({ inicio, xp: (s.inicio === inicio ? s.xp : 0) + xp });
+  const antes = p.materias[materia] ?? { xp: 0, semana: { inicio, xp: 0 } };
+  return {
+    ...p,
+    xp: p.xp + xp,
+    dias: marcarDia(p),
+    semana: naSemana(p.semana),
+    materias: { ...p.materias, [materia]: { xp: antes.xp + xp, semana: naSemana(antes.semana) } },
+  };
 }
 
-export function registrarResposta(p: Progresso, q: Questao, acertou: boolean): Progresso {
+export function registrarResposta(p: Progresso, q: Questao, acertou: boolean, materia: string): Progresso {
   const antes = p.questoes[q.id] ?? { a: 0, e: 0, caixa: 0, prox: dia() };
   const caixa = acertou ? Math.min(antes.caixa + 1, INTERVALOS.length - 1) : 0;
   const registro = {
@@ -73,7 +88,7 @@ export function registrarResposta(p: Progresso, q: Questao, acertou: boolean): P
     prox: dia(INTERVALOS[caixa]),
   };
   return {
-    ...somarXp(p, acertou ? xpDaQuestao(q) : 0),
+    ...somarXp(p, acertou ? xpDaQuestao(q) : 0, materia),
     questoes: { ...p.questoes, [q.id]: registro },
   };
 }
@@ -83,21 +98,41 @@ export function sequenciaAtiva(p: Progresso, hoje = dia()): number {
   return p.dias.ultimo === hoje || p.dias.ultimo === dia(-1, hoje) ? p.dias.sequencia : 0;
 }
 
-/** Resume o progresso de alguém na linha que aparece no ranking. */
-export function placarDe(id: string, usuario: string, dados: Partial<Progresso>, hoje = dia()): Placar {
-  const p = { ...VAZIO, ...dados };
-  const registros = Object.values(p.questoes);
+function resumir(registros: RegistroQuestao[]) {
   const acertos = registros.reduce((s, r) => s + r.a, 0);
   const tentativas = registros.reduce((s, r) => s + r.a + r.e, 0);
+  return { acertadas: registros.filter((r) => r.a > 0).length, precisao: tentativas ? Math.round((100 * acertos) / tentativas) : null };
+}
+
+/**
+ * Resume o progresso de alguém na linha que aparece no ranking.
+ * `materiaDe` diz a que matéria pertence cada questão, pelo id.
+ */
+export function placarDe(id: string, usuario: string, dados: Partial<Progresso>, materiaDe: (questao: string) => string | undefined, hoje = dia()): Placar {
+  const p = completar(dados);
+  const semana = inicioDaSemana(hoje);
+  const naSemana = (s: Progresso["semana"]) => (s.inicio === semana ? s.xp : 0);
+
+  const porMateria: Record<string, RegistroQuestao[]> = {};
+  for (const [questao, registro] of Object.entries(p.questoes)) {
+    const materia = materiaDe(questao);
+    if (materia) (porMateria[materia] ??= []).push(registro);
+  }
+  const materias: Placar["materias"] = {};
+  for (const materia of new Set([...Object.keys(p.materias), ...Object.keys(porMateria)])) {
+    const xp = p.materias[materia];
+    materias[materia] = { xp: xp?.xp ?? 0, xpSemana: xp ? naSemana(xp.semana) : 0, ...resumir(porMateria[materia] ?? []) };
+  }
+
   return {
     id,
     usuario,
     xp: p.xp,
-    xpSemana: p.semana.inicio === inicioDaSemana(hoje) ? p.semana.xp : 0,
+    xpSemana: naSemana(p.semana),
     sequencia: sequenciaAtiva(p, hoje),
-    acertadas: registros.filter((r) => r.a > 0).length,
-    precisao: tentativas ? Math.round((100 * acertos) / tentativas) : null,
+    ...resumir(Object.values(p.questoes)),
     recordes: p.recordes,
+    materias,
   };
 }
 

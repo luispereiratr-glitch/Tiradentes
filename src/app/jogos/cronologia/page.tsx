@@ -4,17 +4,19 @@ import Link from "next/link";
 import { useState } from "react";
 import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { Jogo } from "@/components/Jogo";
 import { Resultado } from "@/components/Sessao";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { embaralhar, vibrar } from "@/lib/jogo";
+import { chaveRecorde } from "@/lib/jogos";
 import type { Evento } from "@/lib/tipos";
 
 const RODADAS = 3;
 const POR_RODADA = 4;
 
-function sortear(): Evento[] {
-  const escolhidos = embaralhar(disciplina.eventos).slice(0, POR_RODADA);
+function sortear(eventos: Evento[]): Evento[] {
+  const escolhidos = embaralhar(eventos).slice(0, POR_RODADA);
   // Garante que a rodada não comece já na ordem certa.
   const ordenado = (lista: Evento[]) => lista.every((e, i) => i === 0 || lista[i - 1].ano < e.ano);
   let lista = embaralhar(escolhidos);
@@ -24,8 +26,10 @@ function sortear(): Evento[] {
 
 function Cronologia() {
   const { ganharXp, registrarRecorde } = useApp();
+  const disciplina = useDisciplina();
+  const textos = disciplina.textos.cronologia;
   const [rodada, setRodada] = useState(1);
-  const [lista, setLista] = useState(sortear);
+  const [lista, setLista] = useState(() => sortear(disciplina.eventos));
   const [conferido, setConferido] = useState(false);
   const [pontos, setPontos] = useState(0);
   const [fim, setFim] = useState(false);
@@ -50,18 +54,18 @@ function Cronologia() {
   function continuar() {
     if (rodada < RODADAS) {
       setRodada(rodada + 1);
-      setLista(sortear());
+      setLista(sortear(disciplina.eventos));
       setConferido(false);
     } else {
-      registrarRecorde("cronologia", pontos);
-      ganharXp(Math.round(pontos / 2));
+      registrarRecorde(chaveRecorde(disciplina.id, "cronologia"), pontos);
+      ganharXp(Math.round(pontos / 2), disciplina.id);
       setFim(true);
     }
   }
 
   function reiniciar() {
     setRodada(1);
-    setLista(sortear());
+    setLista(sortear(disciplina.eventos));
     setConferido(false);
     setPontos(0);
     setFim(false);
@@ -70,7 +74,7 @@ function Cronologia() {
   if (fim) {
     return (
       <Resultado
-        titulo="Linha do tempo"
+        titulo={disciplina.textos.jogos.cronologia!.nome}
         destaque={`${pontos} pts`}
         detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${RODADAS * (POR_RODADA * 10 + 10)}`}
         acoes={
@@ -97,8 +101,8 @@ function Cronologia() {
         <span className="text-musgo tabular-nums">{pontos} pts</span>
       </div>
 
-      <h1 className="text-2xl font-semibold">Do mais antigo ao mais recente</h1>
-      <p className="mt-1 mb-4 text-sm text-tinta-2">Use as setas para ordenar. O mais antigo fica no topo.</p>
+      <h1 className="text-2xl font-semibold">{textos.titulo}</h1>
+      <p className="mt-1 mb-4 text-sm text-tinta-2">{textos.instrucao}</p>
 
       <ol className="space-y-2.5">
         {lista.map((evento, i) => {
@@ -107,7 +111,7 @@ function Cronologia() {
           return (
             <li key={evento.ano} className={`flex items-center gap-3 rounded-2xl border-2 p-3 transition-colors ${estado}`}>
               {conferido ? (
-                <span className="w-12 shrink-0 text-center font-titulo text-lg font-semibold">{evento.ano}</span>
+                <span className="min-w-12 shrink-0 text-center font-titulo text-lg font-semibold whitespace-nowrap">{evento.rotulo ?? evento.ano}</span>
               ) : (
                 <span className="flex shrink-0 flex-col gap-1">
                   <button
@@ -141,7 +145,7 @@ function Cronologia() {
           ) : (
             <>
               <span className="font-semibold">Ordem certa: </span>
-              {certa.map((e) => e.ano).join(" → ")}
+              {certa.map((e) => e.rotulo ?? e.ano).join(" → ")}
             </>
           )}
         </p>
@@ -161,7 +165,9 @@ function Cronologia() {
 export default function PaginaCronologia() {
   return (
     <Casca foco>
-      <Cronologia />
+      <Jogo id="cronologia">
+        <Cronologia />
+      </Jogo>
     </Casca>
   );
 }

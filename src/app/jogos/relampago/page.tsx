@@ -4,16 +4,21 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { Jogo } from "@/components/Jogo";
 import { Resultado } from "@/components/Sessao";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { embaralhar, vibrar } from "@/lib/jogo";
+import { chaveRecorde, questoesRelampago } from "@/lib/jogos";
 import type { Questao } from "@/lib/tipos";
 
 const DURACAO = 60;
 
 function Relampago() {
   const { responder, registrarRecorde, progresso } = useApp();
+  const disciplina = useDisciplina();
+  const chave = chaveRecorde(disciplina.id, "relampago");
+  const recorde = progresso.recordes[chave];
   const [jogando, setJogando] = useState(false);
   const [fila, setFila] = useState<Questao[]>([]);
   const [indice, setIndice] = useState(0);
@@ -39,12 +44,11 @@ function Relampago() {
   }, [jogando, acabou]);
 
   useEffect(() => {
-    if (acabou) registrarRecorde("relampago", pontos);
-  }, [acabou, pontos, registrarRecorde]);
+    if (acabou) registrarRecorde(chave, pontos);
+  }, [acabou, pontos, registrarRecorde, chave]);
 
   function comecar() {
-    // Enunciados curtos primeiro: no relâmpago não dá tempo de ler textos longos.
-    setFila(embaralhar(disciplina.questoes.filter((x) => x.enunciado.length < 170)));
+    setFila(embaralhar(questoesRelampago(disciplina)));
     setIndice(0);
     setTempo(DURACAO);
     setPontos(0);
@@ -59,7 +63,7 @@ function Relampago() {
     if (marcada !== null || acabou) return;
     const certa = opcoes[i].certa;
     setMarcada(i);
-    responder(q, certa);
+    responder(q, certa, disciplina.id);
     vibrar(certa);
     if (certa) {
       setPontos((p) => p + 10 + combo * 2);
@@ -88,9 +92,7 @@ function Relampago() {
         <p className="mx-auto mt-3 max-w-xs leading-relaxed text-tinta-2">
           Você tem {DURACAO} segundos. Cada acerto seguido vale mais pontos; um erro zera o combo.
         </p>
-        {progresso.recordes.relampago !== undefined && (
-          <p className="mt-3 font-semibold text-ouro">Seu recorde: {progresso.recordes.relampago}</p>
-        )}
+        {recorde !== undefined && <p className="mt-3 font-semibold text-ouro">Seu recorde: {recorde}</p>}
         <div className="mt-8 space-y-3">
           <Botao onClick={comecar}>Começar</Botao>
           <Link href="/jogos" className={estiloLinkSuave}>
@@ -106,7 +108,7 @@ function Relampago() {
       <Resultado
         titulo="Tempo esgotado"
         destaque={`${pontos} pts`}
-        detalhe={`${acertos} ${acertos === 1 ? "acerto" : "acertos"} · recorde ${Math.max(pontos, progresso.recordes.relampago ?? 0)}`}
+        detalhe={`${acertos} ${acertos === 1 ? "acerto" : "acertos"} · recorde ${Math.max(pontos, recorde ?? 0)}`}
         erradas={erradas}
         acoes={
           <>
@@ -162,7 +164,9 @@ function Relampago() {
 export default function PaginaRelampago() {
   return (
     <Casca foco>
-      <Relampago />
+      <Jogo id="relampago">
+        <Relampago />
+      </Jogo>
     </Casca>
   );
 }

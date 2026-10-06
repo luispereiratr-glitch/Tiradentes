@@ -4,18 +4,21 @@ import Link from "next/link";
 import { useState } from "react";
 import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { Jogo } from "@/components/Jogo";
 import { Resultado } from "@/components/Sessao";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { embaralhar, vibrar } from "@/lib/jogo";
+import { chaveRecorde } from "@/lib/jogos";
+import type { Personagem } from "@/lib/tipos";
 
 const PARES = 6;
 
 type Carta = { chave: string; par: string; texto: string; nome: boolean };
 
-function sortear(): Carta[] {
+function sortear(personagens: Personagem[]): Carta[] {
   return embaralhar(
-    embaralhar(disciplina.personagens)
+    embaralhar(personagens)
       .slice(0, PARES)
       .flatMap((p) => [
         { chave: `${p.id}:nome`, par: p.id, texto: p.nome, nome: true },
@@ -26,7 +29,8 @@ function sortear(): Carta[] {
 
 function Memoria() {
   const { ganharXp, registrarRecorde } = useApp();
-  const [cartas, setCartas] = useState(sortear);
+  const disciplina = useDisciplina();
+  const [cartas, setCartas] = useState(() => sortear(disciplina.personagens));
   const [abertas, setAbertas] = useState<number[]>([]);
   const [achadas, setAchadas] = useState<string[]>([]);
   const [jogadas, setJogadas] = useState(0);
@@ -49,8 +53,8 @@ function Memoria() {
       setAbertas([]);
       if (total.length === PARES) {
         const finais = Math.max(10, 100 - (jogadas + 1 - PARES) * 5);
-        registrarRecorde("memoria", finais);
-        ganharXp(30);
+        registrarRecorde(chaveRecorde(disciplina.id, "memoria"), finais);
+        ganharXp(30, disciplina.id);
         setTimeout(() => setFim(true), 700);
       }
     } else {
@@ -59,7 +63,7 @@ function Memoria() {
   }
 
   function reiniciar() {
-    setCartas(sortear());
+    setCartas(sortear(disciplina.personagens));
     setAbertas([]);
     setAchadas([]);
     setJogadas(0);
@@ -95,7 +99,7 @@ function Memoria() {
         </span>
         <span className="text-musgo tabular-nums">{jogadas} jogadas</span>
       </div>
-      <h1 className="mb-4 text-2xl font-semibold">Ligue a figura ao feito</h1>
+      <h1 className="mb-4 text-2xl font-semibold">{disciplina.textos.memoria.titulo}</h1>
 
       <div className="grid grid-cols-3 gap-2.5">
         {cartas.map((carta, i) => {
@@ -114,7 +118,7 @@ function Memoria() {
                     : "border-musgo-escuro bg-musgo text-papel/40"
               } ${carta.nome ? "font-titulo text-[15px] font-semibold" : "text-xs"}`}
             >
-              {visivel ? carta.texto : <Icone nome="livro" className="size-7" />}
+              {visivel ? carta.texto : <Icone nome={disciplina.icone} className="size-7" />}
             </button>
           );
         })}
@@ -126,7 +130,9 @@ function Memoria() {
 export default function PaginaMemoria() {
   return (
     <Casca foco>
-      <Memoria />
+      <Jogo id="memoria">
+        <Memoria />
+      </Jogo>
     </Casca>
   );
 }

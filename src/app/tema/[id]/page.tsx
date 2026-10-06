@@ -3,21 +3,23 @@
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { Casca, Topo } from "@/components/Casca";
+import { Formulas } from "@/components/Formulas";
 import { Icone } from "@/components/Icone";
-import { disciplina, questoesDe } from "@/conteudo";
+import { questoesDe, temaDe } from "@/conteudo";
 import { useApp } from "@/lib/app";
 import { NIVEIS } from "@/lib/jogo";
 
 function Conteudo() {
   const { id } = useParams<{ id: string }>();
   const { progresso } = useApp();
-  const tema = disciplina.temas.find((t) => t.id === id);
+  const tema = temaDe(id);
   if (!tema) notFound();
 
   return (
     <>
       <Topo titulo={tema.titulo} voltar="/" />
-      <p className="mb-6 leading-relaxed text-tinta-2">{tema.resumo}</p>
+      <p className="mb-6 leading-relaxed text-tinta-2"><Formulas>{tema.resumo}</Formulas>
+      </p>
 
       <h2 className="mb-3 text-lg font-semibold">Fases</h2>
       <ol className="mb-8 space-y-3">
@@ -71,10 +73,14 @@ function Conteudo() {
         {tema.guia.map((item) => (
           <details key={item.pergunta} className="group rounded-2xl border border-linha bg-cartao">
             <summary className="flex cursor-pointer list-none items-start justify-between gap-3 p-4 font-semibold [&::-webkit-details-marker]:hidden">
-              {item.pergunta}
+              <span>
+                <Formulas>{item.pergunta}</Formulas>
+              </span>
               <Icone nome="baixo" className="mt-0.5 size-5 shrink-0 text-tinta-2 transition group-open:rotate-180" />
             </summary>
-            <p className="px-4 pb-4 text-[15px] leading-relaxed">{item.resposta}</p>
+            <p className="px-4 pb-4 text-[15px] leading-relaxed">
+              <Formulas>{item.resposta}</Formulas>
+            </p>
           </details>
         ))}
       </div>

@@ -1,5 +1,5 @@
 import type { Questao } from "@/lib/tipos";
-import { criar } from "./criar";
+import { criar } from "../criar";
 
 const d = criar("dutra");
 const v = criar("vargas");

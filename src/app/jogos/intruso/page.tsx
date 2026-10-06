@@ -4,25 +4,29 @@ import Link from "next/link";
 import { useState } from "react";
 import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { Jogo } from "@/components/Jogo";
 import { Resultado } from "@/components/Sessao";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { embaralhar, vibrar } from "@/lib/jogo";
+import { chaveRecorde } from "@/lib/jogos";
+import type { Intruso as Rodada } from "@/lib/tipos";
 
 const RODADAS = 8;
 /** Cada acerto seguido vale um pouco mais, até um teto. */
 const valeCom = (sequencia: number) => 10 + Math.min(sequencia, 5) * 2;
-const MAXIMO = Array.from({ length: RODADAS }, (_, i) => valeCom(i)).reduce((s, n) => s + n, 0);
+const maximoDe = (rodadas: number) => Array.from({ length: rodadas }, (_, i) => valeCom(i)).reduce((s, n) => s + n, 0);
 
-function sortear() {
-  return embaralhar(disciplina.intrusos)
+function sortear(intrusos: Rodada[]) {
+  return embaralhar(intrusos)
     .slice(0, RODADAS)
     .map((r) => ({ r, opcoes: embaralhar([...r.itens, r.intruso]) }));
 }
 
 function Intruso() {
   const { ganharXp, registrarRecorde } = useApp();
-  const [rodadas, setRodadas] = useState(sortear);
+  const disciplina = useDisciplina();
+  const [rodadas, setRodadas] = useState(() => sortear(disciplina.intrusos));
   const [indice, setIndice] = useState(0);
   const [escolha, setEscolha] = useState<string | null>(null);
   const [pontos, setPontos] = useState(0);
@@ -48,14 +52,14 @@ function Intruso() {
       setIndice(indice + 1);
       setEscolha(null);
     } else {
-      registrarRecorde("intruso", pontos);
-      ganharXp(Math.round(pontos / 2));
+      registrarRecorde(chaveRecorde(disciplina.id, "intruso"), pontos);
+      ganharXp(Math.round(pontos / 2), disciplina.id);
       setFim(true);
     }
   }
 
   function reiniciar() {
-    setRodadas(sortear());
+    setRodadas(sortear(disciplina.intrusos));
     setIndice(0);
     setEscolha(null);
     setPontos(0);
@@ -68,7 +72,7 @@ function Intruso() {
       <Resultado
         titulo="Fim de jogo"
         destaque={`${pontos} pts`}
-        detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${MAXIMO}`}
+        detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${maximoDe(rodadas.length)}`}
         acoes={
           <>
             <Botao onClick={reiniciar}>Jogar de novo</Botao>
@@ -141,7 +145,9 @@ function Intruso() {
 export default function PaginaIntruso() {
   return (
     <Casca foco>
-      <Intruso />
+      <Jogo id="intruso">
+        <Intruso />
+      </Jogo>
     </Casca>
   );
 }

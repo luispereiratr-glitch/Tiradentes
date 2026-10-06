@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { Botao, Casca, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { Jogo } from "@/components/Jogo";
 import { Resultado } from "@/components/Sessao";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { embaralhar, vibrar } from "@/lib/jogo";
+import { chaveRecorde } from "@/lib/jogos";
 import type { Cadeia } from "@/lib/tipos";
 
 const RODADAS = 3;
@@ -24,12 +26,13 @@ function embaralharElos(c: Cadeia): Elo[] {
   return lista;
 }
 
-const sortear = () => embaralhar(disciplina.cadeias).slice(0, RODADAS);
+const sortear = (todas: Cadeia[]) => embaralhar(todas).slice(0, RODADAS);
 const maximoDe = (cadeias: Cadeia[]) => cadeias.reduce((s, c) => s + c.passos.length * POR_ELO + BONUS_PERFEITA, 0);
 
 function CausaEConsequencia() {
   const { ganharXp, registrarRecorde } = useApp();
-  const [cadeias, setCadeias] = useState(sortear);
+  const disciplina = useDisciplina();
+  const [cadeias, setCadeias] = useState(() => sortear(disciplina.cadeias));
   const [rodada, setRodada] = useState(0);
   const [lista, setLista] = useState(() => embaralharElos(cadeias[0]));
   const [conferido, setConferido] = useState(false);
@@ -60,14 +63,14 @@ function CausaEConsequencia() {
       setLista(embaralharElos(cadeias[rodada + 1]));
       setConferido(false);
     } else {
-      registrarRecorde("cadeia", pontos);
-      ganharXp(Math.round(pontos / 2));
+      registrarRecorde(chaveRecorde(disciplina.id, "cadeia"), pontos);
+      ganharXp(Math.round(pontos / 2), disciplina.id);
       setFim(true);
     }
   }
 
   function reiniciar() {
-    const novas = sortear();
+    const novas = sortear(disciplina.cadeias);
     setCadeias(novas);
     setRodada(0);
     setLista(embaralharElos(novas[0]));
@@ -79,7 +82,7 @@ function CausaEConsequencia() {
   if (fim) {
     return (
       <Resultado
-        titulo="Causa e consequência"
+        titulo={disciplina.textos.jogos.cadeia!.nome}
         destaque={`${pontos} pts`}
         detalhe={`+${Math.round(pontos / 2)} XP · máximo possível: ${maximoDe(cadeias)}`}
         acoes={
@@ -108,7 +111,7 @@ function CausaEConsequencia() {
 
       <h1 className="text-2xl leading-snug font-semibold">{cadeia.titulo}</h1>
       <p className="mt-1 mb-4 text-sm text-tinta-2">
-        Monte a sequência: cada fato leva ao de baixo. Você só confere uma vez, e não há datas para ajudar.
+        {disciplina.textos.cadeia.instrucao}
       </p>
 
       <ol key={rodada} className="animate-subir space-y-2">
@@ -172,7 +175,9 @@ function CausaEConsequencia() {
 export default function PaginaCadeia() {
   return (
     <Casca foco>
-      <CausaEConsequencia />
+      <Jogo id="cadeia">
+        <CausaEConsequencia />
+      </Jogo>
     </Casca>
   );
 }

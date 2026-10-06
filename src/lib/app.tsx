@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { registrarResposta, sequenciaAtiva, somarXp, VAZIO } from "./jogo";
+import { completar, registrarResposta, sequenciaAtiva, somarXp, VAZIO } from "./jogo";
 import { emailDe, normalizarUsuario, supabase, validarCadastro } from "./supabase";
 import type { Progresso, Questao } from "./tipos";
 
@@ -19,8 +19,9 @@ type App = {
   entrar: (usuario: string, senha: string) => Promise<string | null>;
   cadastrar: (usuario: string, senha: string) => Promise<string | null>;
   sair: () => Promise<void>;
-  responder: (q: Questao, acertou: boolean) => void;
-  ganharXp: (xp: number) => void;
+  /** `materia` é o id da disciplina em que o XP foi ganho: cada uma tem o seu ranking. */
+  responder: (q: Questao, acertou: boolean, materia: string) => void;
+  ganharXp: (xp: number, materia: string) => void;
   concluirLicao: (chave: string, estrelas: number) => void;
   registrarRecorde: (jogo: string, pontos: number) => void;
 };
@@ -87,7 +88,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         if (remoto && (remoto.xp ?? 0) >= (dados?.xp ?? 0)) dados = remoto;
       }
       if (!ativo) return;
-      setProgresso({ ...VAZIO, ...dados });
+      setProgresso(completar(dados ?? {}));
       setCarregadoPara(usuario.id);
     })();
     return () => {
@@ -150,11 +151,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     definirUsuario(null);
   }, [definirUsuario]);
 
-  const responder = useCallback((q: Questao, acertou: boolean) => {
-    setProgresso((p) => registrarResposta(p, q, acertou));
+  const responder = useCallback((q: Questao, acertou: boolean, materia: string) => {
+    setProgresso((p) => registrarResposta(p, q, acertou, materia));
   }, []);
 
-  const ganharXp = useCallback((xp: number) => setProgresso((p) => somarXp(p, xp)), []);
+  const ganharXp = useCallback((xp: number, materia: string) => setProgresso((p) => somarXp(p, xp, materia)), []);
 
   const concluirLicao = useCallback((chave: string, estrelas: number) => {
     setProgresso((p) =>

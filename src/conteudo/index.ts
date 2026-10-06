@@ -1,36 +1,25 @@
 import type { Disciplina, Questao } from "@/lib/tipos";
-import { oficiaisEnem } from "./historia/oficiais-enem";
-import { oficiaisFuvest } from "./historia/oficiais-fuvest";
-import { oficiaisVestibulares } from "./historia/oficiais-vestibulares";
-import { avancadasBrasil } from "./historia/avancadas-brasil";
-import { avancadasMundo } from "./historia/avancadas-mundo";
-import { cadeias, intrusos } from "./historia/jogos";
-import { novasBrasil1 } from "./historia/novas-brasil-1";
-import { novasBrasil2 } from "./historia/novas-brasil-2";
-import { novasMundo1 } from "./historia/novas-mundo-1";
-import { novasMundo2 } from "./historia/novas-mundo-2";
-import { eventos, personagens, questoesFiguras } from "./historia/personagens";
-import { questoesBrasil } from "./historia/questoes-brasil";
-import { questoesMundo } from "./historia/questoes-mundo";
-import { resumos } from "./historia/resumos";
-import { temas } from "./historia/temas";
+import { fisica } from "./fisica";
+import { historia } from "./historia";
 
-/** Para adicionar outra matéria, crie uma pasta ao lado de `historia` e registre aqui. */
-export const disciplinas: Disciplina[] = [
-  {
-    id: "historia",
-    nome: "História",
-    temas,
-    questoes: [...questoesBrasil, ...questoesMundo, ...questoesFiguras, ...avancadasBrasil, ...avancadasMundo, ...novasBrasil1, ...novasBrasil2, ...novasMundo1, ...novasMundo2, ...oficiaisEnem, ...oficiaisFuvest, ...oficiaisVestibulares],
-    personagens,
-    eventos,
-    intrusos,
-    resumos,
-    cadeias,
-  },
-];
+/**
+ * Para adicionar outra matéria, crie uma pasta ao lado de `historia` e registre aqui.
+ * Ids de tema e de questão não podem se repetir entre matérias: o progresso é guardado por eles.
+ */
+export const disciplinas: Disciplina[] = [historia, fisica];
 
-export const disciplina = disciplinas[0];
+/** As que o aluno pode escolher. Uma matéria ainda sem temas só aparece em desenvolvimento. */
+export const disciplinasAbertas = disciplinas.filter((d) => d.temas.length > 0 || process.env.NODE_ENV !== "production");
+
+/** Procura em todas as matérias: o id de um tema é único. */
+export const temaDe = (id: string) => disciplinas.flatMap((d) => d.temas).find((t) => t.id === id);
+
+const todas = disciplinas.flatMap((d) => d.questoes);
+
+const materias = new Map(disciplinas.flatMap((d) => d.questoes.map((q) => [q.id, d.id] as const)));
+
+/** Id da matéria a que pertence uma questão. */
+export const materiaDaQuestao = (questao: string) => materias.get(questao);
 
 export const questoesDe = (tema: string, nivel?: string): Questao[] =>
-  disciplina.questoes.filter((q) => q.tema === tema && (!nivel || q.nivel === nivel));
+  todas.filter((q) => q.tema === tema && (!nivel || q.nivel === nivel));

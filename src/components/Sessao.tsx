@@ -1,28 +1,50 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { temaDe } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { embaralhar, NIVEIS, vibrar } from "@/lib/jogo";
 import type { Questao } from "@/lib/tipos";
 import { Botao, estiloLinkSuave } from "./Casca";
+import { Formulas } from "./Formulas";
 import { Icone } from "./Icone";
 
 export type Fim = { acertos: number; total: number; erradas: Questao[] };
 
+/** Desenho da questão, sobre fundo branco: as figuras das provas são traço preto em papel. */
+export function Figura({ q, className = "" }: { q: Questao; className?: string }) {
+  if (!q.figura) return null;
+  const { src, alt, largura, altura } = q.figura;
+  return (
+    <div className={`rounded-2xl border border-linha bg-white p-3 ${className}`}>
+      <Image src={src} alt={alt} width={largura} height={altura} unoptimized className="mx-auto h-auto max-h-72 w-auto max-w-full" />
+    </div>
+  );
+}
+
 export function Explicacao({ q, compacta = false }: { q: Questao; compacta?: boolean }) {
   return (
     <div className="space-y-2 text-[15px] leading-relaxed">
-      {compacta && <p className="font-semibold">{q.enunciado}</p>}
+      {compacta && (
+        <p className="font-semibold whitespace-pre-line">
+          <Formulas>{q.enunciado}</Formulas>
+        </p>
+      )}
+      {compacta && <Figura q={q} />}
       <p>
         <span className="font-semibold text-musgo-escuro">Resposta certa: </span>
-        {q.alternativas[0]}
+        <Formulas>{q.alternativas[0]}</Formulas>
       </p>
-      <p>{q.explicacao}</p>
+      <p>
+        <Formulas>{q.explicacao}</Formulas>
+      </p>
       {q.lembre && (
         <p className="rounded-xl bg-papel-2 px-3 py-2">
           <span className="font-semibold">Para lembrar: </span>
-          {q.lembre}
+          <Formulas>{q.lembre}</Formulas>
         </p>
       )}
     </div>
@@ -32,6 +54,7 @@ export function Explicacao({ q, compacta = false }: { q: Questao; compacta?: boo
 /** Roda uma lista de questões, uma por vez, com explicação depois de cada resposta. */
 export function Sessao({ questoes, sair, aoFim }: { questoes: Questao[]; sair: string; aoFim: (fim: Fim) => void }) {
   const { responder } = useApp();
+  const ativa = useDisciplina();
   const [indice, setIndice] = useState(0);
   const [escolha, setEscolha] = useState<number | null>(null);
   const [acertos, setAcertos] = useState(0);
@@ -49,7 +72,7 @@ export function Sessao({ questoes, sair, aoFim }: { questoes: Questao[]; sair: s
     if (respondida) return;
     const certa = opcoes[i].certa;
     setEscolha(i);
-    responder(q, certa);
+    responder(q, certa, temaDe(q.tema)?.disciplina ?? ativa.id);
     vibrar(certa);
     if (certa) setAcertos((n) => n + 1);
     else setErradas((lista) => [...lista, q]);
@@ -85,7 +108,10 @@ export function Sessao({ questoes, sair, aoFim }: { questoes: Questao[]; sair: s
         <p className="mb-2 text-xs font-semibold tracking-wide text-tinta-2 uppercase">
           {q.oficial ?? `Estilo ${q.estilo}`} · {NIVEIS.find((n) => n.id === q.nivel)!.nome}
         </p>
-        <h2 className="mb-5 text-[19px] leading-snug font-medium whitespace-pre-line">{q.enunciado}</h2>
+        <h2 className="mb-5 text-[19px] leading-snug font-medium whitespace-pre-line">
+          <Formulas>{q.enunciado}</Formulas>
+        </h2>
+        <Figura q={q} className="mb-5" />
 
         <div className="space-y-2.5">
           {opcoes.map((op, i) => {
@@ -101,7 +127,9 @@ export function Sessao({ questoes, sair, aoFim }: { questoes: Questao[]; sair: s
                 className={`flex w-full items-start gap-3 rounded-2xl border-2 px-4 py-3.5 text-left text-[15px] leading-snug transition ${estado}`}
               >
                 <span className="mt-px font-semibold text-tinta-2">{"ABCDE"[i]}</span>
-                <span className="flex-1">{op.texto}</span>
+                <span className="flex-1">
+                  <Formulas>{op.texto}</Formulas>
+                </span>
               </button>
             );
           })}

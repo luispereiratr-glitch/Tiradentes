@@ -1,12 +1,5 @@
 import type { Cadeia, Intruso } from "@/lib/tipos";
-
-const intruso = (tema: string, grupo: string, itens: string[], fora: string, explicacao: string): Intruso => ({
-  tema,
-  grupo,
-  itens,
-  intruso: fora,
-  explicacao,
-});
+import { cadeia, intruso } from "../criar";
 
 /** Jogo O intruso: três itens pertencem ao grupo e um não. */
 export const intrusos: Intruso[] = [
@@ -75,8 +68,6 @@ export const intrusos: Intruso[] = [
   intruso("figuras", "líderes ligados ao Vietnã, à China e à União Soviética socialistas", ["Ho Chi Minh", "Mao Tsé-Tung", "Nikita Kruschev"], "Augusto Pinochet",
     "Pinochet era um ditador anticomunista: derrubou o socialista Allende com apoio dos Estados Unidos."),
 ];
-
-const cadeia = (tema: string, titulo: string, passos: string[], explicacao: string): Cadeia => ({ tema, titulo, passos, explicacao });
 
 /** Jogo Causa e consequência: os passos estão na ordem certa, cada um levando ao seguinte. */
 export const cadeias: Cadeia[] = [

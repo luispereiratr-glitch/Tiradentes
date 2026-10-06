@@ -2,28 +2,30 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Botao, Casca, Topo } from "@/components/Casca";
-import { disciplina } from "@/conteudo";
 import { useApp } from "@/lib/app";
+import { useDisciplina } from "@/lib/disciplina";
 import { ALTURA, desenharCarta, LARGURA, montarCarta } from "@/lib/carta";
 import { desempenhoPorTema } from "@/lib/diagnostico";
-import { JOGOS } from "@/lib/jogos";
-import { posicaoGeral, useRanking } from "@/lib/ranking";
+import { jogosDe } from "@/lib/jogos";
+import { naMateria, posicaoNaMateria, useRanking } from "@/lib/ranking";
 
 const NOME_DO_ARQUIVO = "meu-card-caderno.png";
 
 function Carta() {
   const { progresso } = useApp();
+  const disciplina = useDisciplina();
   const { eu, placares } = useRanking();
   const tela = useRef<HTMLCanvasElement>(null);
   const [pronta, setPronta] = useState(false);
   const [aviso, setAviso] = useState<string | null>(null);
 
-  // Com menos de três pessoas a posição não diz nada; fica fora do card.
-  const posicao = placares && placares.length >= 3 ? posicaoGeral(eu, placares) : null;
+  // Com menos de três pessoas na matéria a posição não diz nada; fica fora do card.
+  const naDisputa = (placares ?? []).filter((p) => naMateria(p, disciplina.id).xp > 0);
+  const posicao = naDisputa.length >= 3 && naMateria(eu, disciplina.id).xp > 0 ? posicaoNaMateria(eu, naDisputa, disciplina.id) : null;
 
   useEffect(() => {
     if (!tela.current) return;
-    const pontosEmJogos = JOGOS.reduce((s, j) => s + (progresso.recordes[j.id] ?? 0), 0);
+    const pontosEmJogos = jogosDe(disciplina).reduce((s, j) => s + (progresso.recordes[j.recorde] ?? 0), 0);
     const carta = montarCarta(eu, disciplina.nome, desempenhoPorTema(progresso, disciplina), pontosEmJogos, posicao);
     let ativo = true;
     desenharCarta(tela.current, carta).then(() => {
@@ -34,7 +36,7 @@ function Carta() {
     };
     // `eu` é recalculado a cada render a partir do progresso; redesenhar só quando os dados mudam.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progresso, posicao]);
+  }, [progresso, posicao, disciplina]);
 
   const comoArquivo = () =>
     new Promise<File | null>((resolver) =>
