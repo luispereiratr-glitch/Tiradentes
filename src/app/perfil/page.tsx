@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { Botao, Casca, estiloBotaoLink, estiloLinkSuave } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { SeletorColegio } from "@/components/SeletorColegio";
 import { useApp } from "@/lib/app";
 import { useDisciplina } from "@/lib/disciplina";
 import { nivelDoXp, sequenciaAtiva } from "@/lib/jogo";
@@ -21,6 +23,22 @@ const CONQUISTAS: { nome: string; descricao: string; feita: (p: Progresso) => bo
   { nome: "Nota máxima", descricao: "Tire 3 estrelas em uma fase", feita: (p) => Object.values(p.licoes).includes(3) },
   { nome: "Constelação", descricao: "Junte 30 estrelas", feita: (p) => estrelasTotais(p) >= 30 },
 ];
+
+function Colegio() {
+  const { colegio, escolherColegio } = useApp();
+  const [aviso, setAviso] = useState<string | null>(null);
+  if (colegio === undefined) return null;
+  return (
+    <label className="mb-7 block">
+      <span className="mb-1.5 block text-lg font-semibold">Colégio</span>
+      <SeletorColegio
+        valor={colegio ?? ""}
+        aoMudar={async (id) => setAviso((await escolherColegio(id)) ?? "Colégio salvo.")}
+      />
+      {aviso && <span className="mt-1.5 block text-sm text-tinta-2">{aviso}</span>}
+    </label>
+  );
+}
 
 function Perfil() {
   const { usuario, progresso, sair, modoLocal } = useApp();
@@ -57,6 +75,8 @@ function Perfil() {
           </div>
         ))}
       </dl>
+
+      {!modoLocal && <Colegio />}
 
       <h2 className="mb-3 text-lg font-semibold">Conquistas</h2>
       <ul className="mb-7 space-y-2">

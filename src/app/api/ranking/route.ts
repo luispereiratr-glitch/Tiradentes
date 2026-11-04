@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { materiaDaQuestao } from "@/conteudo";
+import { colegioValido } from "@/lib/colegios";
 import { dia, placarDe } from "@/lib/jogo";
 import type { Progresso } from "@/lib/tipos";
 
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
   const hoje = /^\d{4}-\d{2}-\d{2}$/.test(pedido) ? pedido : dia();
 
   const [perfis, progressos] = await Promise.all([
-    admin.from("perfis").select("id, usuario, xp"),
+    admin.from("perfis").select("id, usuario, xp, colegio"),
     admin.from("progresso").select("user_id, dados"),
   ]);
   if (perfis.error || progressos.error) {
@@ -32,8 +33,10 @@ export async function GET(request: Request) {
   }
 
   const dadosDe = new Map(progressos.data.map((linha) => [linha.user_id as string, linha.dados as Partial<Progresso>]));
-  const placares = perfis.data.map((perfil) =>
-    placarDe(perfil.id, perfil.usuario, dadosDe.get(perfil.id) ?? { xp: perfil.xp }, materiaDaQuestao, hoje),
-  );
+  const placares = perfis.data.map((perfil) => ({
+    ...placarDe(perfil.id, perfil.usuario, dadosDe.get(perfil.id) ?? { xp: perfil.xp }, materiaDaQuestao, hoje),
+    // O perfil é editável pelo próprio aluno: um valor fora da lista vira "sem colégio".
+    colegio: colegioValido(perfil.colegio) ? perfil.colegio : null,
+  }));
   return Response.json({ placares });
 }

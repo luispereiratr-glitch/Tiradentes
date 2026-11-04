@@ -9,7 +9,7 @@ import type { Placar, PlacarMateria } from "./tipos";
 
 /** Placar de todo mundo, com a linha de quem está logado sempre em primeiro. `placares` é `null` enquanto carrega. */
 export function useRanking(): { eu: Placar; placares: Placar[] | null; erro: boolean } {
-  const { usuario, progresso, modoLocal } = useApp();
+  const { usuario, progresso, modoLocal, colegio } = useApp();
   const [remotos, setRemotos] = useState<Placar[] | null>(null);
   const [erro, setErro] = useState(false);
 
@@ -32,7 +32,7 @@ export function useRanking(): { eu: Placar; placares: Placar[] | null; erro: boo
   }, []);
 
   // A própria linha sai sempre do progresso em memória: o que acabou de ser feito já aparece.
-  const eu = placarDe(usuario!.id, usuario!.nome, progresso, materiaDaQuestao);
+  const eu = { ...placarDe(usuario!.id, usuario!.nome, progresso, materiaDaQuestao), colegio: colegio ?? null };
   const placares = modoLocal ? [eu] : remotos && [eu, ...remotos.filter((p) => p.id !== eu.id)];
   return { eu, placares, erro };
 }

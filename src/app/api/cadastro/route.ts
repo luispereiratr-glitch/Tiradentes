@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { colegioValido } from "@/lib/colegios";
 import { emailDe, normalizarUsuario, validarCadastro } from "@/lib/supabase";
 
 export async function POST(request: Request) {
@@ -13,13 +14,15 @@ export async function POST(request: Request) {
   const senha = String(corpo?.senha ?? "");
   const invalido = validarCadastro(usuario, senha);
   if (invalido) return Response.json({ erro: invalido }, { status: 400 });
+  const colegio = corpo?.colegio;
+  if (!colegioValido(colegio)) return Response.json({ erro: "Escolha o seu colégio." }, { status: 400 });
 
   const admin = createClient(url, chaveServico, { auth: { persistSession: false } });
   const { data, error } = await admin.auth.admin.createUser({
     email: emailDe(usuario),
     password: senha,
     email_confirm: true,
-    user_metadata: { usuario },
+    user_metadata: { usuario, colegio },
   });
   if (error || !data.user) {
     const jaExiste = error?.status === 422 || /already/i.test(error?.message ?? "");
@@ -29,7 +32,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { error: erroPerfil } = await admin.from("perfis").insert({ id: data.user.id, usuario });
+  const { error: erroPerfil } = await admin.from("perfis").insert({ id: data.user.id, usuario, colegio });
   if (erroPerfil) {
     await admin.auth.admin.deleteUser(data.user.id);
     return Response.json({ erro: "Não foi possível criar a conta." }, { status: 500 });

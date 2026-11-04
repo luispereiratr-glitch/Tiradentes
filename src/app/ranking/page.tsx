@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { Casca } from "@/components/Casca";
 import { Icone } from "@/components/Icone";
+import { SeletorColegio } from "@/components/SeletorColegio";
 import { useApp } from "@/lib/app";
+import { nomeCurto, OUTRO } from "@/lib/colegios";
 import { useDisciplina } from "@/lib/disciplina";
 import { jogosDe } from "@/lib/jogos";
 import { naMateria, useRanking } from "@/lib/ranking";
@@ -119,8 +121,44 @@ function Podio({ tres, euId, valor }: { tres: Placar[]; euId: string; valor: (p:
   );
 }
 
+/** Para contas criadas antes dos colégios: escolhe ali mesmo, sem sair do ranking. */
+function EscolherColegio() {
+  const { escolherColegio } = useApp();
+  const [valor, setValor] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
+  const [salvando, setSalvando] = useState(false);
+
+  async function mudar(id: string) {
+    setValor(id);
+    setSalvando(true);
+    setErro(await escolherColegio(id));
+    setSalvando(false);
+  }
+
+  return (
+    <div className="mb-5 rounded-2xl border-2 border-musgo/40 bg-musgo-claro/50 p-4">
+      <p className="mb-1 font-semibold">De qual colégio você é?</p>
+      <p className="mb-3 text-sm leading-relaxed text-tinta-2">
+        Cada colégio tem o seu ranking. Escolha o seu para aparecer junto com a sua turma.
+      </p>
+      <SeletorColegio valor={valor} aoMudar={mudar} className={salvando ? "opacity-60" : ""} />
+      {erro && (
+        <p role="alert" className="mt-2 text-sm text-erro">
+          {erro}
+        </p>
+      )}
+    </div>
+  );
+}
+
+type Escopo = "colegio" | "todos";
+
 function Ranking() {
-  const { modoLocal } = useApp();
+  const { modoLocal, colegio } = useApp();
+  const [escolhaEscopo, setEscopo] = useState<Escopo>("colegio");
+  // Sem colégio escolhido, só existe o ranking de todos.
+  const escopo: Escopo = colegio ? escolhaEscopo : "todos";
+  const meuColegio = nomeCurto(colegio);
   const disciplina = useDisciplina();
   const jogos = jogosDe(disciplina);
   const { eu, placares, erro } = useRanking();
@@ -129,6 +167,7 @@ function Ranking() {
 
   const criterio = criterioDe(aba, jogo, jogos, disciplina);
   const lista = (placares ?? [])
+    .filter((p) => escopo === "todos" || p.colegio === colegio)
     .filter((p) => !criterio.soPontuados || criterio.pontos(p) > 0)
     .sort((a, b) => criterio.pontos(b) - criterio.pontos(a) || naMateria(b, disciplina.id).xp - naMateria(a, disciplina.id).xp || a.usuario.localeCompare(b.usuario));
   const minhaPosicao = lista.findIndex((p) => p.id === eu.id) + 1;
@@ -137,9 +176,31 @@ function Ranking() {
   return (
     <>
       <h1 className="mb-1 text-[28px] font-semibold">Ranking de {disciplina.nome}</h1>
+      {!modoLocal && colegio === null && <EscolherColegio />}
+      {!modoLocal && colegio && (
+        <div className="mb-3 flex gap-2">
+          {(
+            [
+              { id: "colegio", nome: colegio === OUTRO ? "Outros colégios" : meuColegio },
+              { id: "todos", nome: "Todos os colégios" },
+            ] as { id: Escopo; nome: string }[]
+          ).map((e) => (
+            <button
+              key={e.id}
+              aria-pressed={escopo === e.id}
+              onClick={() => setEscopo(e.id)}
+              className={`min-w-0 truncate rounded-full border px-3 py-1.5 text-sm font-semibold ${escopo === e.id ? "border-musgo bg-musgo text-papel" : "border-linha bg-cartao text-tinta-2"}`}
+            >
+              {e.nome}
+            </button>
+          ))}
+        </div>
+      )}
       <p className="mb-4 text-tinta-2">
         {!placares
-          ? "Quem está estudando mais na turma."
+          ? escopo === "colegio"
+            ? "Quem está estudando mais no seu colégio."
+            : "Quem está estudando mais, em todos os colégios."
           : minhaPosicao
             ? `Você está em ${minhaPosicao}º de ${lista.length}.`
             : `Você ainda não pontuou aqui. Cada matéria tem o seu ranking.`}
@@ -185,7 +246,7 @@ function Ranking() {
       ) : lista.length === 0 ? (
         <p className="rounded-2xl border border-linha bg-cartao p-5 leading-relaxed text-tinta-2">{criterio.vazio}</p>
       ) : (
-        <div key={`${aba}:${jogo}`} className="animate-subir">
+        <div key={`${escopo}:${aba}:${jogo}`} className="animate-subir">
           {comPodio && <Podio tres={lista.slice(0, 3)} euId={eu.id} valor={criterio.valor} />}
           <ol className="space-y-2">
             {lista.map((p, i) => {
@@ -201,7 +262,11 @@ function Ranking() {
                       {p.usuario}
                       {p.id === eu.id && <span className="font-normal text-tinta-2"> (você)</span>}
                     </span>
-                    {detalhe && <span className="block text-sm text-tinta-2">{detalhe}</span>}
+                    {(detalhe || (escopo === "todos" && p.colegio)) && (
+                      <span className="block truncate text-sm text-tinta-2">
+                        {[escopo === "todos" ? nomeCurto(p.colegio) : null, detalhe].filter(Boolean).join(" · ")}
+                      </span>
+                    )}
                   </span>
                   {p.sequencia > 0 && (
                     <span className="flex items-center gap-1 text-sm font-semibold text-barro" title="Dias seguidos estudando">

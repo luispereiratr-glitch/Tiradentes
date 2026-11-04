@@ -157,4 +157,6 @@ export type Placar = {
   recordes: Record<string, number>;
   /** Os mesmos números, por matéria. Quem nunca estudou uma matéria não tem a chave dela. */
   materias: Record<string, PlacarMateria>;
+  /** Id do colégio (src/lib/colegios.ts); `null` para quem ainda não escolheu. */
+  colegio?: string | null;
 };

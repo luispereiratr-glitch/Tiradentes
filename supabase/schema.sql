@@ -30,3 +30,7 @@ create policy "atualiza o proprio perfil" on public.perfis
 drop policy if exists "progresso proprio" on public.progresso;
 create policy "progresso proprio" on public.progresso
   for all to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- Colégio de cada aluno (id da lista em src/lib/colegios.ts). Cada colégio tem o seu ranking.
+-- Quem já tinha conta antes desta coluna fica com null e escolhe o colégio no app.
+alter table public.perfis add column if not exists colegio text;

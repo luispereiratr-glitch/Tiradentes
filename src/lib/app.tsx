@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { completar, registrarResposta, sequenciaAtiva, somarXp, VAZIO } from "./jogo";
+import { colegioValido } from "./colegios";
 import { emailDe, normalizarUsuario, supabase, validarCadastro } from "./supabase";
 import type { Progresso, Questao } from "./tipos";
 
@@ -17,7 +18,10 @@ type App = {
   progresso: Progresso;
   modoLocal: boolean;
   entrar: (usuario: string, senha: string) => Promise<string | null>;
-  cadastrar: (usuario: string, senha: string) => Promise<string | null>;
+  cadastrar: (usuario: string, senha: string, colegio: string) => Promise<string | null>;
+  /** Id do colégio (src/lib/colegios.ts). `null` = ainda não escolheu; `undefined` = carregando. */
+  colegio: string | null | undefined;
+  escolherColegio: (colegio: string) => Promise<string | null>;
   sair: () => Promise<void>;
   /** `materia` é o id da disciplina em que o XP foi ganho: cada uma tem o seu ranking. */
   responder: (q: Questao, acertou: boolean, materia: string) => void;
@@ -52,6 +56,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [carregadoPara, setCarregadoPara] = useState<string | null>(null);
   const [progresso, setProgresso] = useState<Progresso>(VAZIO);
   const carregado = usuario !== null && carregadoPara === usuario.id;
+  const [colegio, setColegio] = useState<string | null | undefined>(undefined);
   const envio = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // O Supabase renova o token de tempos em tempos; só troca o usuário se o id mudar.
@@ -75,6 +80,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const { data } = supabase.auth.onAuthStateChange((_evento, sessao) => definirUsuario(deSessao(sessao)));
     return () => data.subscription.unsubscribe();
   }, [definirUsuario]);
+
+  useEffect(() => {
+    if (!usuario) return;
+    if (!supabase) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setColegio(null);
+      return;
+    }
+    let ativo = true;
+    supabase
+      .from("perfis")
+      .select("colegio")
+      .eq("id", usuario.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (ativo) setColegio(colegioValido(data?.colegio) ? data.colegio : null);
+      });
+    return () => {
+      ativo = false;
+    };
+  }, [usuario]);
 
   useEffect(() => {
     if (!usuario) return;
@@ -128,15 +154,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   );
 
   const cadastrar = useCallback(
-    async (nomeBruto: string, senha: string) => {
+    async (nomeBruto: string, senha: string, colegioEscolhido: string) => {
       if (!supabase) return entrar(nomeBruto, senha);
+      if (!colegioValido(colegioEscolhido)) return "Escolha o seu colégio.";
       const nome = normalizarUsuario(nomeBruto);
       const invalido = validarCadastro(nome, senha);
       if (invalido) return invalido;
       const resposta = await fetch("/api/cadastro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuario: nome, senha }),
+        body: JSON.stringify({ usuario: nome, senha, colegio: colegioEscolhido }),
       }).catch(() => null);
       if (!resposta) return "Sem conexão. Tente de novo.";
       if (!resposta.ok) return (await resposta.json().catch(() => null))?.erro ?? "Não foi possível criar a conta.";
@@ -145,10 +172,23 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     [entrar],
   );
 
+  const escolherColegio = useCallback(
+    async (novo: string) => {
+      if (!colegioValido(novo)) return "Escolha um colégio da lista.";
+      if (!supabase || !usuario) return null;
+      const { error } = await supabase.from("perfis").update({ colegio: novo }).eq("id", usuario.id);
+      if (error) return "Não foi possível salvar. Tente de novo.";
+      setColegio(novo);
+      return null;
+    },
+    [usuario],
+  );
+
   const sair = useCallback(async () => {
     if (supabase) await supabase.auth.signOut();
     else localStorage.removeItem(CHAVE_USUARIO_LOCAL);
     definirUsuario(null);
+    setColegio(undefined);
   }, [definirUsuario]);
 
   const responder = useCallback((q: Questao, acertou: boolean, materia: string) => {
@@ -178,13 +218,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       modoLocal: !supabase,
       entrar,
       cadastrar,
+      colegio,
+      escolherColegio,
       sair,
       responder,
       ganharXp,
       concluirLicao,
       registrarRecorde,
     }),
-    [pronto, usuario, carregado, progresso, entrar, cadastrar, sair, responder, ganharXp, concluirLicao, registrarRecorde],
+    [pronto, usuario, carregado, progresso, entrar, cadastrar, colegio, escolherColegio, sair, responder, ganharXp, concluirLicao, registrarRecorde],
   );
 
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Botao } from "@/components/Casca";
+import { SeletorColegio } from "@/components/SeletorColegio";
 import { useApp } from "@/lib/app";
 
 export default function Entrar() {
@@ -11,6 +12,7 @@ export default function Entrar() {
   const [novo, setNovo] = useState(false);
   const [nome, setNome] = useState("");
   const [senha, setSenha] = useState("");
+  const [colegio, setColegio] = useState("");
   const [erro, setErro] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
 
@@ -21,7 +23,7 @@ export default function Entrar() {
   async function enviar(evento: React.FormEvent) {
     evento.preventDefault();
     setEnviando(true);
-    setErro(await (novo ? cadastrar(nome, senha) : entrar(nome, senha)));
+    setErro(await (novo ? cadastrar(nome, senha, colegio) : entrar(nome, senha)));
     setEnviando(false);
   }
 
@@ -59,6 +61,16 @@ export default function Entrar() {
               autoComplete={novo ? "new-password" : "current-password"}
               required
             />
+          </label>
+        )}
+
+        {!modoLocal && novo && (
+          <label className="block">
+            <span className="mb-1.5 block text-sm font-semibold">Colégio</span>
+            <SeletorColegio valor={colegio} aoMudar={setColegio} />
+            <span className="mt-1.5 block text-xs leading-snug text-tinta-2">
+              O ranking mostra primeiro quem é do mesmo colégio que você.
+            </span>
           </label>
         )}
 
